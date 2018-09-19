@@ -1,0 +1,37 @@
+{
+  "name": "ngTimepicker",
+  "homepage": "https://github.com/jkuri/ngTimepicker",
+  "authors": [
+    "Jan Kuri <jkuri88@gmail.com>"
+  ],
+  "description": "AngularJS Timepicker",
+  "main": "src/js/ngTimepicker.js",
+  "keywords": [
+    "AngularJS",
+    "directive",
+    "timepicker",
+    "time",
+    "picker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.1",
+    "fontawesome": "~4.3.0"
+  },
+  "_release": "6908e33452",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "6908e3345204969e5490e015605a7a8ffb2806c5"
+  },
+  "_source": "https://github.com/jkuri/ngTimepicker.git",
+  "_target": "*",
+  "_originalSource": "ngTimepicker"
+}

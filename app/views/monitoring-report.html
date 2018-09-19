@@ -1,0 +1,247 @@
+
+   
+<div class="main" ng-show="ShowAdminForm">
+
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+
+                  
+
+
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                     <!--                <li class=""><a>Manage Monitoring Report</a></li> -->
+
+                                     <!--       <li class="link" ng-click="cancelUser();"><a>Manage Monitoring Report</a></li>
+                                     <li class="" ng-show="hideNavBar">Create New Requset</li> -->
+
+                                          <li class="" ng-show="!hideNavBar && !editForm">Manage Monitoring Report</li>
+
+                                             <li class="link" ng-click="cancelUser();" ng-show="hideNavBar"><a>Manage Monitoring Report</a></li>
+                                        <li class="link" ng-click="cancelUser();" ng-show="editForm"><a>Manage Monitoring Report</a></li>
+
+
+                                        <li class="" ng-show="hideNavBar">Create New Report</li>
+                                         <li class="" ng-show="editForm">Edit Report</li>
+
+
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                <button class="pri-cus-buttons pull-right visible-md-block visible-lg-block" ng-show="!hideNavBar && !editForm" ng-click="shSideNav();showAddForm();"><i class="fa fa-plus"></i> Create New Report</button>
+                            </div>
+                            <!-- /.navbar-collapse -->
+
+                            <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+                              
+                           </div>
+                       <!--      <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1" id="">
+                                <ul class="nav navbar-right">
+                            
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle text-right" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#/myacount">My Account</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#/">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div> -->
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+                <div class="row">
+                    <span class="mar-15-7" style="float: right;"  ng-show="!hideAddUserForm"> <input type="checkbox" ng-model="showItems" id="showItems1" ng-click="ShowArchivedReports1()"  >  &nbsp;Show archived items</span>
+                </div>
+              <div class="list-view">
+               <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Manage Monitoring Report</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       <button class="pri-cus-buttons" ng-click="shSideNav();showAddForm();" ng-show="!hideNavBar && !editForm"><i class="fa fa-plus"></i> Create New Report</button>
+                   </div>
+               </div>
+                 <!-- end of .filter-container -->
+                <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+                          <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                       <th ng-click="rssFeedSort(asc=!asc,'Month');">Month <i class="fa fa-sort"></i></th>
+                                      <th>Saving Date</th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody ng-repeat="content in GetAllMonitoringReportsData | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                  <tr>
+                                      <td>{{content.Month}}</td>
+                                 <!--      <td>{{content.SavingDate}}</td> -->
+                                       <td >{{content.SavingDate}}</td>
+                                  
+                                      <td>
+                                   
+                                          <i class="fa fa-ban" data-toggle="tooltip" tooltip data-placement="top" title="Deactivate"  ng-click="UpdateMonitoringStatus1(content.id)"
+                                           ng-show="content.permission[0].Deactivate==true"></i>
+                                          <i class="fa fa-check" data-toggle="tooltip" tooltip data-placement="top" title="Active" 
+                                           ng-show="content.permission[0].Activate==true" ng-click="UpdateMonitoringStatus0(content.id)"></i>
+                                          <i class="fa fa-archive" data-toggle="tooltip" tooltip data-placement="top" title="Archive"  
+                                           ng-show="content.permission[0].Archive==true" ng-click="UpdateMonitoringStatus9(content.id)"></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" tooltip title="Edit" ng-click="GetMonitoringReport1(content.id)"></i>
+                                      
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">
+                                          <strong>Clients :</strong>
+                                          <span>{{content.Client}}</span><br>
+                                          <strong>Report File :</strong>
+                                            <a href="" ng-click="fnpdf(content.ReportFile)">{{content.ReportFile}}</a> 
+                                      </td>
+                                  </tr>
+                                  
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+                <div class="row" ng-if="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="pagination-div pull-right" ng-show="GetAllMonitoringReportsData.length > 0">
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left"></i> Previous</button></li>
+                                      
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> 
+                </div>
+                <div class="row form-view" ng-show="hideAddUserForm">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="monitorReportForm" class="styles">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="month">Month<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && monitorReportForm.auditTitle.$invalid]">
+                                            <select class="form-control" id="month" ng-model="month" required name="month">
+                                                  <option>Select</option>
+                                                  <option >Janaury</option>
+                                                  <option >February</option>
+                                                  <option >March</option>
+                                                  <option >April</option>
+                                                  <option >May</option>
+                                                  <option >June</option>
+                                                  <option >July</option>
+                                                  <option >August</option>
+                                                  <option >September</option>
+                                                  <option >October</option>
+                                                  <option >November</option>
+                                                  <option >December</option>
+                                            </select>
+                                                <span class=required ng-show="submitted && monitorReportForm.month.$error.required">Select Month</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status<span class=required> *</span></label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && updateAuditForm.status.$invalid]">
+                                            <select class="form-control" id="status" ng-model="status" name="status" required>
+                                               <option value=" ">Select</option>
+                                            <option value="0" ng-selected="status=='0'">Active</option>
+                                            <option value="1" ng-selected="status=='1'">Deactivate</option>
+                                            <option value="9" ng-show="editForm" ng-selected="status=='9'">Archive</option>
+                                            </select>
+                                           <span class=required ng-show="submitted && monitorReportForm.status.$error.required">Select Status</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>   
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && monitorReportForm.clientSelection.$invalid]">
+                                           <select class="form-control" id="contentClientType"  ng-options="item.id as item.ClientName for item in clientSelection12" 
+                                         ng-model="clientSelection" name="clientSelection" required>
+                                         </select>
+                                          <span class=required ng-show="submitted && monitorReportForm.clientSelection.$error.required">Select Client</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                 <!--    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="">PDF File<span class=required> *</span></label>                                    
+                                           <input type="file" ng-model="myfile" base-sixty-four-input accept="application/pdf">
+                                        </div>
+                                    </div> -->
+
+
+                                       <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="">PDF File</label>
+                                                 <input type="file" ng-model="myfile" base-sixty-four-input accept="application/pdf" style="color: #fff!important;" > 
+                                           
+                                                 <span style="    color: #777777 !important;">      {{myfile.filename}}</span>
+                                       
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix">
+                               
+                                      <!--   <button type="button" class="pri-cus-buttons pull-right" ng-click="AddContent()">Save</button> -->
+                                              <button type="button" class="pri-cus-buttons pull-right" ng-click="AddContent();"
+                                          ng-show="showSaveButton">Save</button>
+                                        <button type="button" class="pri-cus-buttons pull-right" ng-click="editclientSubmit();" ng-show="!showSaveButton">Save</button>
+                                                     <button type="button" class="btn btn-default pull-right" ng-click="cancelUser();">Cancel</button>
+                                    </div>
+                                </div>
+                                
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

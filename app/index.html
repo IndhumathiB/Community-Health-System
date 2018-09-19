@@ -1,0 +1,264 @@
+<!doctype html>
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html>
+  <head>
+    <META Http-Equiv="Cache-Control" Content="no-cache">
+     <META Http-Equiv="Pragma" Content="no-cache"> 
+     <META Http-Equiv="Expires" Content="0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="">
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <title>BeSociably</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-responsive-tables/release/angular-responsive-tables.css" />
+    <link rel="stylesheet" href="bower_components/angularjs-datepicker/dist/angular-datepicker.min.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+
+
+   
+    <!-- endbuild -->
+  </head>
+  <body ng-app="chsApp" ng-controller="baseCtrl" class="{{bodylayout}}" onload="noBack();" >
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- <noscript>
+      <div>
+        <p>It seems you have disable the Javascript, <strong>Please enable the Javascript</strong> </p>
+      </div>
+    </noscript> -->
+
+    <!-- Add your site or application content here -->
+
+<!--              <div class="alert alert-{{alert.type}} alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">{{alert.msg}}</div> 
+  
+
+
+
+<div class="alerts-container ng-hide" ng-class="slideDownAlertBox" ng-show="alerts.length">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)"><span
+            ng-cloak>{{alert.msg}}</span></alert>
+</div>
+ -->
+
+     <div id="Fullscreen">
+      
+      <!-- <button type="button" class="btn btn-danger" style="top:0;float:right">Link</button> -->
+        <img src="" alt="" />
+   
+    </div>
+    <div class="app-box" id="main-wrapper">
+
+  
+        <div class="preloader spinner"></div>
+     
+
+               <div class="" class="visible-md-block visible-lg-block" ng-if="showSideBar"    ng-include   src="'views/sideMenu.html'"  ng-cloak>
+            </div>
+            
+
+         
+
+
+
+         <div class="alerts-container" growl ng-class="slideDownAlertBox" ></div>
+        <div ng-view="" ></div>
+           <footer class="text-right m-text-left content-footer" ng-if="showSideBar" 
+          >&copy; 2009-2016 Sociably, LLC All Rights Reserved.</footer>
+            <!--  <footer class="text-right">&copy; Copyright 2016 BeSociably. All Rights Reserved.</footer> -->
+    </div>
+
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       /*!function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');*/
+    </script>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src='bower_components/jquery/dist/jquery.js'></script>
+    <script src='bower_components/angular/angular.js'></script>
+    <script src='bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js'></script>
+    <script src='bower_components/angular-animate/angular-animate.js'></script>
+    <script src='bower_components/angular-aria/angular-aria.js'></script>
+    <script src='bower_components/angular-cookies/angular-cookies.js'></script>
+    <script src='bower_components/angular-messages/angular-messages.js'></script>
+    <script src='bower_components/angular-resource/angular-resource.js'></script>
+    <script src='bower_components/angular-route/angular-route.js'></script>
+    <script src='bower_components/angular-sanitize/angular-sanitize.js'></script>
+    <script src='bower_components/angular-touch/angular-touch.js'></script>
+    <script src='bower_components/angular-responsive-tables/release/angular-responsive-tables.js'></script>
+    <script src='bower_components/angularjs-datepicker/dist/angular-datepicker.min.js'></script>
+    <script src='bower_components/angular-bootstrap/ui-bootstrap-tpls.js'></script>
+    <script src='bower_components/ng-bootstrap-alerts/dist/index.min.js'></script>
+    <script src='bower_components/ngTimepicker/src/js/ngTimepicker.js'></script>
+    <script src='bower_components/angular-growl/build/angular-growl.js'></script>
+    <script src='bower_components/moment/moment.js'></script>
+    <script src='bower_components/fullcalendar/dist/fullcalendar.js'></script>
+    <script src='bower_components/angular-ui-calendar/src/calendar.js'></script>
+    <script src='bower_components/angular-loading-bar/build/loading-bar.js'></script>
+    <script src='bower_components/bootstrap/dist/js/bootstrap.js'></script>
+    <script src='bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js'></script>
+    <script src='bower_components/jspdf/dist/jspdf.debug.js'></script>
+    <script src='bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js'></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+       
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+      <script src="scripts/config.js"></script>
+       <script src="scripts/datepicker.js"></script>
+        <script src="scripts/app.js"></script>
+       
+
+        <script src="scripts/utilauth.js"></script>
+        
+        <script src="scripts/service.js"></script>
+        <script src="scripts/sha1.js"></script>
+       <script src="scripts/oauth.js"></script>
+      <script src="scripts/underscore.js"></script>
+        
+        <script src="scripts/controllers/login.js"></script>
+      <script src="scripts/date.js"></script>
+      <script src="scripts/controllers/baseCtrl.js"></script>
+       <script src="scripts/controllers/blogPlansCtrl.js"></script>
+      <script src="scripts/controllers/userManagement.js"></script>
+      <script src="scripts/controllers/logoutController.js"></script>
+      <script src="scripts/controllers/manageClientCtrl.js"></script>      
+      <script src="scripts/controllers/manageSocialsitesCtrl.js"></script>      
+      <script src="scripts/controllers/forgotPasswordCtrl.js"></script>
+   <script src="scripts/controllers/myacountCtrl.js"></script>
+   <script src="scripts/controllers/contentRequestCtrl.js"></script>
+   <script src="scripts/controllers/writingTaskCtrl.js"></script>
+ <script src="scripts/controllers/createInvoiceTaskCtrl.js"></script>
+ <script src="scripts/controllers/writerInvoiceTaskCtrl.js"></script>
+<script src="scripts/controllers/MyInvoicesCtrl.js"></script>
+
+
+
+
+       <script src="scripts/controllers/manageContentCtrl.js"></script>
+     <script src="scripts/controllers/WeeklyPackageListsCtrl.js"></script>
+     
+      <script src="scripts/controllers/siteNoticeCtrl.js"></script>
+       <script src="scripts/controllers/failedContentsCtrl.js"></script>
+      <script src="scripts/controllers/rssFeedsCtrl.js"></script>
+      <script src="scripts/controllers/siteblogPlanCtrl.js"></script>
+      <script src="scripts/controllers/siteCategoriesCtrl.js"></script>
+       <script src="scripts/controllers/sitePdfMetricesCtrl.js"></script>
+     <script src="scripts/controllers/manageFaqCtrl.js"></script>
+      <script src="scripts/controllers/PostContentReportCtrl.js"></script>
+      <script src="scripts/controllers/auditReportCtrl.js"></script>
+      <script src="scripts/controllers/monitoringReportCtrl.js"></script>
+
+
+          <script src="scripts/controllers/sideMenuCtrl.js"></script>
+
+     <script src="scripts/controllers/writerJobCtrl.js"></script>
+
+    <script src="scripts/controllers/dashboardCtrl.js"></script>
+     <script src="scripts/controllers/DashboardWriterCtrl.js"></script>
+      <script src="scripts/angular-base64-upload.js"></script>
+       <script src="scripts/jspdf.js"></script>
+
+
+
+       <script src="scripts/textAngular.min.js"></script>
+      <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script>
+       
+        <!-- endbuild -->
+</body>
+<style>
+.ta-editor {
+  min-height: 300px;
+  height: auto;
+  overflow: auto;
+  font-family: inherit;
+  font-size: 100%;
+}
+
+#loading-bar .bar {
+background: #0d68a7;
+height: 4px;
+}
+
+#loading-bar-spinner {
+    display: block;
+    position: absolute;
+    right: 10px;
+    left: auto;
+    top: 55px;
+    z-index: 1049;
+}
+
+#loading-bar-spinner .spinner-icon {
+width: 18px;
+height: 18px;
+border: solid 4px transparent;
+border-top-color: #c34111;
+border-left-color: #c34111;
+border-radius: 10px;
+}
+
+#Fullscreen {
+
+                    height: 100%;
+
+                    display: none;
+                    z-index:9999;
+                    position:fixed;
+
+                    top:0;
+
+                    right:0;
+
+                    bottom:0;
+
+                    left:0;
+
+                    /* I made a 50% opacity black tile background for this 
+                     div so it would seem more... modal-y*/
+
+                    background: transparent url('http://asherman1986-001-site2.smarterasp.net/Images/SiteImages/bgTile_black25.png') repeat;
+
+                }
+#Fullscreen img{
+  padding:20px;
+    height: 80vh;
+    border: 1px solid black;
+    background-color:white;
+    display: block;
+    margin: 0 auto;
+}
+</style>
+<script type="text/javascript">
+  
+    window.history.forward();
+    function noBack() { window.history.forward(); }
+
+
+</script>
+
+</html>

@@ -1,0 +1,360 @@
+<div class="main" ng-show="ShowAdminForm">
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left" ng-model="formSelect">
+
+                                    <li class="" ng-show="!hideNavBar && !editForm">User Management</li>
+
+                                             <li class="link" ng-click="cancelUser();" ng-show="hideNavBar"><a>User Management</a></li>
+                                        <li class="link" ng-click="cancelUser();" ng-show="editForm"><a>User Management</a></li>
+
+
+                                        <li class="" ng-show="hideNavBar">Create New User</li>
+                                         <li class="" ng-show="editForm">Edit User</li>
+                                  <!--   <li class="" ng-show="editForm">Edit User</li> -->
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                <button class="pri-cus-buttons pull-right visible-md-block visible-lg-block" ng-click="showAddForm()"  ng-show="!hideNavBar && !editForm && !removeAdd"><i class="fa fa-plus"></i> Create New User</button>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                           <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+              <div class="row hidden-md hidden-lg mob-heads">
+                  <div class="col-xs-9 col-sm-8">
+                      <h3>User Management</h3>
+                  </div>
+                  <div class="col-xs-3 col-sm-4 text-right" >
+                      <button class="pri-cus-buttons" ng-click="showAddForm()" ng-show="!hideNavBar && !editForm && !removeAdd"><i class="fa fa-plus"></i> Create New User</button>
+                  </div>
+              </div>
+                <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-lg-12 filter-container">
+                        <label  ng-model="collapsed" ng-click="collapsed = !collapsed"><i class="fa fa-chevron-down" ></i> Filter</label>
+                        <div class="filter-fields form-inline"  ng-show="collapsed" >
+                            <div class="form-group">
+                                <label for="form_user">User</label>                                
+                                    <select class=form-control id="selectUserType" ng-model="selectUserType" name="selectUserType" ng-options="selectuUser.id as selectuUser.name for selectuUser in userSelection" required ng-change="shri(selectUserType);" >
+                                    <option value="" selected style=''>-- Select User Type --</option>
+                                    </select>
+                                  
+                            </div>
+                            <button type="button" class="btn btn-default mar-0-5" ng-click="Reset();">Reset</button>
+                        </div>
+                    </div>
+                </div> <!-- end of .filter-container -->
+                <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+                          <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                      <th ng-click="userManagementSort(asc=!asc,'Name');">Name <i class="fa fa-sort"></i></th>
+                                      <th ng-click="userManagementSort(asc=!asc,'Email');">Email <i class="fa fa-sort"></i></th>
+                                   <!--       <th >ID </th> -->
+                                         <th ng-click="userManagementSort(asc=!asc,'City_State');">City <i class="fa fa-sort"></i></th>
+                                      <th>Saving Date</th>  
+                                       <!--    <th>Level</th>            -->                      
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                          <tbody>
+                                <tr  ng-repeat="userdatas in UserManagementsDatas | filter:{UserLevel:selectUserType}:true | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                      <td>{{userdatas.Name}}</td>
+                                      <td>{{userdatas.Email}}</td>
+                                    <!--   <td>{{userdatas.id}}</td> -->
+                                      <td>{{userdatas.City_State}}</td>
+                                   
+                                  <td >{{userdatas.SavingDate}}</td>
+
+                                 <!--    <td >{{userdatas.UserLevel}}</td> -->
+                                                                            
+
+                                      <td>
+                                          <i ng-click="deleteUser(userdatas.id)" class="fa fa-trash-o"  title="Delete" data-toggle="tooltip" data-placement="top" tooltip></i>
+
+                                          <i ng-show="userdatas.Status == '0'" ng-click="deActivateUser(userdatas.id)" class="fa fa-ban"
+                                           title="Deactivate"  data-toggle="tooltip" data-placement="top" tooltip></i>
+
+                                          <i ng-show="userdatas.Status == '1'" ng-click="ActivateUser(userdatas.id)" class="fa fa-check"
+                                           title="Activate"  data-toggle="tooltip" data-placement="top" tooltip></i>
+
+                                          <i ng-click="editUser(userdatas)" class="fa fa-pencil-square-o"
+                                           title="Edit" data-toggle="tooltip" data-placement="top" tooltip></i>
+                                      </td>
+                                  </tr> 
+                              
+                              </tbody>
+                          </table>
+                        
+
+
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+                <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>                                    
+                                </ul>
+                            </div>
+
+                         <div class="pagination-div pull-right" ng-show="UserManagementsDatas.length > 0">                            
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left" ></i> Previous</button></li>
+                                    
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+                      
+                            <div ng-repeat="n in range()">
+                          <div class="pagination-div pull-right" ng-hide="n.length == 0">                            
+                              
+                            </div>
+                      </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end of .pagination -->
+                <div ng-show="hideAddUserForm" class="row">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="userForm" class="styles" novalidate>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="usertype">User Type<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.userType.$invalid]">
+                                            <select class=form-control ng-model="userType" name="userType" ng-options="selectuUser.id as selectuUser.name for selectuUser in userSelection" ng-change="changeUserType(userType);" required ng-disabled="disableBtn">
+                                    <option value="" selected >-- Select User Type --</option>
+                                    </select>
+                                                 <span class=required ng-show="submitted && !userType">Select User Type</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.status.$invalid]">
+                                            <select class="form-control" id="status" ng-model="status" name="status"> <option value=" ">Select</option>
+                                                <option value="0" ng-selected="status=='0'">Active</option>
+                                                <option value="1" ng-selected="status=='1'">Deactivate</option>
+                                                 
+                                            </select>
+                                            <span class=required ng-show="submitted && userForm.status.error.required">Select Status</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="fname">First Name<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.firstName.$invalid]">
+                                            <input type="text" class="form-control" id="fname" ng-model="firstName" name="firstName" required ng-pattern="/^[ a-zA-Z0-9]{1,20}$/">
+                                        <span class=required ng-show="submitted && userForm.firstName.$error.required">Firstname is required</span>
+                                                <span class=required ng-show="userForm.firstName.$error.pattern">Firstname is Invalid</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lname">Last Name</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.lname.$invalid]">
+                                            <input type="text" class="form-control" id="lname" ng-model="lname" name="lname" ng-pattern="/^[ a-zA-Z0-9]{1,20}$/">
+                                                <span class=required ng-show="submitted && userForm.lname.$error.required">Lastname is required</span>
+                                               <span class=required ng-if="(lname.length>0&&lname == firstName)">Lastname should not be match with Firstname</span>
+                                                <span class=required ng-show="userForm.lname.$error.pattern">Lastname is Invalid</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6" ng-hide="!showSaveButton">
+                                        <div class="form-group">
+                                            <label for="username">User Name <span class="required">*</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.userName.$invalid]">
+                                            <input type="text" class="form-control" id="username" ng-model="userName" name="userName" required ng-pattern="/^[ a-zA-Z0-9]{1,20}$/">
+                                                <span class=required ng-show="submitted && !userName">Username is required</span>
+                                                <span class=required ng-show="userForm.userName.$error.pattern">Username is Invalid</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6" ng-hide="showSaveButton">
+                                        <div class="form-group">
+                                            <label for="username">User Name <span class="required">*</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.userName.$invalid]">
+                                            <input type="text" class="form-control" id="username" ng-model="userName" name="userName" required ng-pattern="/^[ a-zA-Z0-9]{1,20}$/" ng-disabled="userName">
+                                                <span class=required ng-show="submitted && !userName">Username is required</span>
+                                                <span class=required ng-show="userForm.userName.$error.pattern">Username is Invalid</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6" >
+                                        <div class="form-group">
+                                            <label for="password">Password <span class="required">*</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.password.$invalid]">
+                      <input type="password" class="form-control" id="password" ng-model="password" name="password" required ng-pattern="/(?=.*[!@#$%&*()_+~])(?=.*[0-9])(?=.*[a-z]).{6,15}$/">
+                                                <span class=required ng-show="submitted && userForm.password.$error.required">Password is required</span>
+                                                <span class=required ng-show="userForm.password.$error.pattern">Password must have 6 to 15 letters which includes one numeric,special characters</span>
+                                </div>
+                                        </div>
+                                    </div>
+<!--
+                                    <div class="col-sm-12 col-md-6" ng-hide="showSaveButton">
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.password.$invalid]">
+                                            <input type="password" class="form-control" id="password" ng-model="password" name="password"  ng-pattern="/(?=.*[!@#$%&*()_+~])(?=.*[0-9])(?=.*[a-z]).{6,15}$/">
+                                                
+                                                <span class=required ng-show="userForm.password.$error.pattern">Password must have 6 to 15 letters which includes one numeric,special characters</span>
+                                </div>
+                                        </div>
+                                    </div>
+-->
+                                </div>  
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="add">Address</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.address.$invalid]">
+                                            <input type="text" class="form-control" id="add" ng-model="address" name="address">
+                                                
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="city">City</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.city.$invalid]">
+                                            <input type="text" class="form-control" id="city" ng-model="city" name="city">
+                                                
+                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="state">State</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.state.$invalid]">
+                                            <input type="text" class="form-control" id="state" ng-model="state" name="state">
+                                                
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="zip">Zip</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.zip.$invalid]">
+                                            <input type="text" class="form-control" id="zip" ng-model="zip" name="zip" ng-pattern="/^[0-9]{0,10}$/">
+                                                
+                                                <span class=required ng-show="userForm.zip.$error.pattern">Zip is Invalid</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.phone.$invalid]">
+                                            <input type="tel" class="form-control" id="phone" ng-model="phone" name="phone" ng-pattern="/^[+-.0-9]{0,16}$/">
+                                                
+                                                <span class=required ng-show="userForm.phone.$error.pattern">Phone Number is Invalid</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="email">Email<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.emailId.$invalid]">
+                                                <input type="email" class="form-control" id="email" ng-model="emailId" name="emailId" ng-blur="checkemailfunction()"  required ng-pattern="/^[_a-z0-9]+([_a-z0-9.]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/">
+                                                <span class=required ng-show="submitted && userForm.emailId.$error.required">Email is required</span>
+                                                <span class=required ng-show="userForm.emailId.$error.pattern">Email is Invalid</span>
+                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Notes</label>
+                                           
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="notes" name="notes"></textarea>
+                                               
+                                        </div>
+                                        </div>
+                                    </div>
+
+
+                                          <div class="row" ng-show="showHospitalField">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                        <div class="control-group" ng-class=" {true: 'error'}[submitted && userForm.hospitalValue.$invalid]"> 
+                                            <select class=form-control ng-model="hospitalValue" name="hospitalValue" ng-options="selectuUser.id as selectuUser.clientname for selectuUser in SupervisorLookUp"  required multiple ng-show="!showSingleSelection">
+                                    <option value="" selected >-- Select Client --</option>
+                                    </select>
+
+                                       <select class=form-control ng-model="hospitalValue" name="hospitalValue" ng-options="selectuUser.id as selectuUser.clientname for selectuUser in ClientLookUp"  required ng-show="showSingleSelection" >
+                                    <option value="" selected >-- Select Client --</option>
+                                    </select>
+                                  <span class=required ng-show="submitted && !hospitalValue">Select Client</span>
+                                </div>                                                 
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix">                                     
+                                        <button type="button" class="pri-cus-buttons pull-right" ng-click="AddUser();"
+                                          ng-show="showSaveButton">Save</button>
+                                          <button type="button" class="pri-cus-buttons pull-right" ng-click="editUserSubmit();" ng-show="!showSaveButton">Save</button>
+                                             <button type="button" class="btn btn-default pull-right" ng-click="cancelUser();">Cancel</button>
+                                    </div>
+                                </div>
+                                </div>
+                                
+                      
+                                
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

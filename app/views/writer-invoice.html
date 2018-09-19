@@ -1,0 +1,128 @@
+
+   
+<div class="main" ng-show="ShowAdminForm">
+      
+    
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                    <li class=""><a>Writing Tasks Invoices</a></li>
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar();"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                
+                            </div>
+                            <!-- /.navbar-collapse -->
+                           <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        
+        <div class="page-contents">
+            <div class="container-fluid">
+               <div class="list-view">
+                <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Writing Tasks Invoices</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       
+                   </div>
+               </div>
+                <div class="row">
+                    <div class="col-lg-12 filter-container">
+                        <label ng-click="collapsed=!collapsed" ng-model="collapsed"><i class="fa fa-chevron-down"></i> Filter</label>
+                        <div class="filter-fields form-inline">
+                            <div class="form-group" ng-hide="collapsed">
+                                <label for="form_user">Writers</label>
+                                <select class=form-control ng-model="selectWriter" name="selectWriter" ng-options="writerNames.id as writerNames.WriterName for writerNames in writersLookup" required ng-change="GetInvoicesByWriter(selectWriter)">
+                                    <option value="" selected style=''>-- Select Writer --</option>
+                                    </select>
+                                     <button type="button" class="btn btn-default mar-0-5" ng-click="Reset();">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- end of .filter-container -->
+                 
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+                          <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                      <th>Invoice #</th>
+                                      <th>Start Date</th>
+                                      <th>End Date</th>
+                                      <th>Amount</th>
+                                    <th ng-click="writerInvoiceSort(asc=!asc,'status');">Status <i class="fa fa-sort"></i></th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="writerdatas in writerInvoiceDatas | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                      <td>{{writerdatas.id}}</td>
+                                      <td >{{writerdatas.startDate}}</td>
+                                      <td >{{writerdatas.endDate}}</td>
+                                      <td>$ {{writerdatas.amount}}</td>
+                                      <td>{{writerdatas.status}}</td>
+                                      <td>
+                                          <i class="fa fa-eye" data-toggle="tooltip" tooltip ng-click="PrintPreview(writerdatas.id)" data-placement="top" title="Print Preview"></i>
+                                          <i class="fa fa-money" data-toggle="tooltip" tooltip ng-show="writerdatas.status == 'Paid'" data-placement="top" ng-click="SetUnpaidStatus(writerdatas.id)"
+                                             title="Mark as Unpaid"></i>
+                                          <i class="fa fa-usd" data-toggle="tooltip" tooltip ng-show="writerdatas.status == 'UnPaid'" ng-click="SetPaidStatus(writerdatas.id)" data-placement="top" title="Mark as Paid"></i>
+                                        
+                                          
+                                      </td>
+                                  </tr>                                 
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+              <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="pagination-div pull-right" ng-show="writerInvoiceDatas.length > 0">
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left"></i> Previous</button></li>
+                                     
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div><!-- end of .pagination -->
+               </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

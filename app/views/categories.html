@@ -1,0 +1,170 @@
+
+   
+<div class="main" ng-show="ShowAdminForm">
+ 
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                  <!--   <li class=""><a>Manage Categories</a></li>
+ -->
+                                        <!--  <li class="link" ng-click="cancelUser();">Manage Categories</li> -->
+
+                                          <li class="" ng-show="!hideNavBar">Manage Categories</li>
+                                        <li class="link" ng-click="cancelUser();" ng-show="hideNavBar"><a>Manage Categories</a></li>
+
+
+                                     <li class="" ng-show="hideNavBar">Create New Categories</li>
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                <button class="pri-cus-buttons pull-right visible-md-block visible-lg-block" ng-click="shSideNav();showAddForm();" ng-show="!hideNavBar" ><i class="fa fa-plus"></i> Create New Categories</button>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                             <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+                <div class="row">
+                    <span class="mar-15-7" style="float: right;" > <input type="checkbox" ng-model="showItems"  ng-click="showAchievedItems()" >  &nbsp;Show archived Categories</span>
+                </div>
+
+               <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Manage Categories</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       <button class="pri-cus-buttons" ng-click="showAddForm()" ng-show="!hideNavBar"><i class="fa fa-plus"></i> Create New Categories</button>
+                   </div>
+               </div>
+                 <!-- end of .filter-container -->
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+                          <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                          <th ng-click="userManagementSort(asc=!asc,'name');">Name <i class="fa fa-sort"></i></th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                <tr ng-repeat="content in GetAllCategoriesData | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                      <td>{{content.name}}</td>
+                                      <td class="text-right">
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Deactivate" ng-show="content.permission[0].Deactivate==true"
+                                          ng-click="deActivateSetStatus(content.id)" tooltip></i>
+                                         <i class="fa fa-check" data-toggle="tooltip" data-placement="top" title="Active" ng-show="content.permission[0].Activate==true"
+                                         ng-click="ActivateSetStatus(content.id)" tooltip ></i>                                        
+                                         <i class="fa fa-pencil-square-o" ng-click="editContent(content,content.permission[0].Activate,content.permission[0].Deactivate)" data-toggle="tooltip" data-placement="top" title="Edit" ng-show="content.permission[0].Edit==true" tooltip></i>
+                                      </td>
+                                  </tr>
+                                <tr class="form-input "  ng-show="hideAddUserForm">
+                                     <td>
+                                       <form name="categoryForm" class="styles">
+                                           <div class="row">
+                                                <div class="col-md-5 mar-5-0">
+                                                     <div class="control-group" ng-class=" {true: 'error'}[submitted && categoryForm.categoryName.$invalid]">
+                                                    <input type="text" placeholder="Name" class="form-control" ng-model="categoryName" name="categoryName" ng-pattern="/^[ a-zA-Z]{1,20}$/" required>
+                                                 <span class=required ng-show="submitted && categoryForm.categoryName.$error.required">Give Category Name</span>
+                                                 <span class=required ng-show="categoryForm.categoryName.$error.pattern">Name is Invalid</span>
+                                                </div></div>
+                                                <div class="col-md-5 mar-5-0">
+                                                     <div class="control-group" ng-class=" {true: 'error'}[submitted && categoryForm.categoryStatus.$invalid]">
+                                                   <select class="form-control" ng-model="categoryStatus" name="categoryStatus" required>
+                                                       <option value=" ">Select</option>
+                                                         <option value="1" ng-selected="categoryStatus=='1'">Active</option>
+                                                                  <option value="0" ng-selected="categoryStatus=='0'">Deactivate</option>
+                                                     </select>
+                                                          <span class=required ng-show="submitted && categoryForm.categoryStatus.$error.required">Select Status</span>
+                                          </div>
+                                                </div>
+                                            </div>
+                                       </form>
+                                     </td>
+                                     <td>
+                                         <button ng-click="cancelUser();" type="button" class="btn btn-default mar-5">Cancel</button>
+                                        <!--  <button type="button" class="pri-cus-buttons mar-5" ng-click="AddContent();">Save</button> -->
+
+                                          <button type="button" class="pri-cus-buttons mar-5" ng-click="AddContent();"
+                                          ng-show="showSaveButton">Save</button>
+                                          <button type="button" class="pri-cus-buttons mar-5" ng-click="editContentSubmit();" ng-show="!showSaveButton">Save</button>
+                                     </td>
+                                 </tr>
+                              <!--      <tr>
+                                      <td>Addiction</td>
+                                      <td class="text-right">
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Deactivate"></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                                      </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                      <td>Advertising</td>
+                                      <td class="text-right">
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Deactivate"></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                                      </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                      <td>Branding</td>
+                                      <td class="text-right">
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Deactivate"></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                                      </td>
+                                  </tr> -->
+                                  
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+                     <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="pagination-div pull-right" ng-show="GetAllCategoriesData.length > 0">
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left"></i> Previous</button></li>
+                                      
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end of .pagination -->
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

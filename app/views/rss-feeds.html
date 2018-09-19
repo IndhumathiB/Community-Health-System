@@ -1,0 +1,286 @@
+
+   
+<div class="main" ng-show="ShowAdminForm">
+
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                               <!--      <li class="link" ng-click="cancelUser();"><a>Manage Rss Feeds</a></li>
+                                    <li class="" ng-show="hideNavBar">Create New Rss</li> -->
+
+
+                                         <li class="" ng-show="!hideNavBar && !editForm">Manage Rss Feeds</li>
+
+                                             <li class="link" ng-click="cancelUser();" ng-show="hideNavBar"><a>Manage Rss Feeds</a></li>
+                                        <li class="link" ng-click="cancelUser();" ng-show="editForm"><a>Manage Rss Feeds</a></li>
+
+
+                                        <li class="" ng-show="hideNavBar">Create New Rss</li>
+                                         <li class="" ng-show="editForm">Edit Rss</li>
+
+
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                <button class="pri-cus-buttons pull-right visible-md-block visible-lg-block" ng-show="!hideNavBar && !editForm" ng-click="shSideNav();showAddForm();"><i class="fa fa-plus"></i> Create New Rss</button>
+
+             <!--                       <span lass="btn cus-buttons pull-right visible-md-block visible-lg-block"> <input type="checkbox" ng-model="showItems"  ng-click="showAchievedItems()" >  &nbsp;Show archived items</span> -->
+                            </div>
+                            <!-- /.navbar-collapse -->
+                         <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+                <div class="row">
+                    <span class="mar-15-7" style="float: right;" ng-show="!hideAddUserForm"> <input type="checkbox" ng-model="showItems"  ng-click="showAchievedItems()" >  &nbsp;Show archived items</span>
+                </div>
+
+              <div class="list-view">
+               <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Manage Rss Feeds</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       <button class="pri-cus-buttons" ng-click="showAddForm()" ng-show="!hideNavBar && !editForm"><i class="fa fa-plus"></i> Create New Rss</button>
+                   </div>
+               </div>
+                 <!-- end of .filter-container -->
+                <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+
+                        <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                 <th ng-click="rssFeedSort(asc=!asc,'Title');">Title <i class="fa fa-sort"></i></th>
+                                      <th ng-click="rssFeedSort(asc=!asc,'CategoryName');">Category <i class="fa fa-sort"></i></th>
+                                      <th>Saving Date</th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody ng-repeat="rssdatas in rssFeedDatas  | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                  <tr >
+                                      <td>{{rssdatas.Title}}</td>
+                                      <td>{{rssdatas.CategoryName}}</td>
+                                      <td >{{rssdatas.SavingDate}}</td>
+                                      <td>
+                                        <!--   <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete" ng-click="GetRssFeedById(rssdatas.id);"></i> -->
+                                        <i  class="fa fa-ban" data-toggle="tooltip" data-placement="top"  title="Deactivate"  ng-click="DeActiveUpdateStatus(rssdatas.id)"
+                                          ng-show="rssdatas.permission[0].Deactivate==true" tooltip></i>
+                                          <i class="fa fa-check"  data-toggle="tooltip" data-placement="top" title="Activate" 
+                                          ng-show="rssdatas.permission[0].Activate==true" ng-click="ActiveUpdateStatus(rssdatas.id)" tooltip></i>
+                                          <i class="fa fa-archive" data-toggle="tooltip" data-placement="top" title="Archive"  
+                                           ng-show="rssdatas.permission[0].Archive==true" ng-click="UpdateStatus(rssdatas.id)" tooltip></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit" ng-click="GetRssFeedById1(rssdatas.id)" tooltip></i>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">
+                                          <strong>Clients :</strong>
+                                          <span>{{rssdatas.Clients}}</span><br>
+                                          <strong>Feed Url :</strong>
+                                          <span>{{rssdatas.feedURL}}</span>
+                                      </td>
+                                  </tr>
+                                
+                              </tbody>
+                          </table>
+
+
+                       <!--    <table class="table table-striped">
+                              <thead>
+                                  <tr>
+                                      <th>Title</th>
+                                      <th>Category</th>
+                                      <th>Saving Date</th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td>Test Sample</td>
+                                      <td>News &amp; Information</td>
+                                      <td>2/29/2016 4:16:11 AM</td>
+                                      <td>
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Deactivate"></i>
+                                          <i class="fa fa-archive" data-toggle="tooltip" data-placement="top" title="Archive"></i>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">
+                                          <strong>Clients :</strong>
+                                          <span>H1</span><br>
+                                          <strong>Feed Url :</strong>
+                                          <span>Sample.url</span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>Demo Rss Feed</td>
+                                      <td>Social Chater</td>
+                                      <td>2/29/2016 4:16:11 AM</td>
+                                      <td>
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Deactivate"></i>
+                                          <i class="fa fa-archive" data-toggle="tooltip" data-placement="top" title="Archive"></i>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">
+                                          <strong>Clients :</strong>
+                                          <span>H2</span><br>
+                                          <strong>Feed Url :</strong>
+                                          <span>demo.url</span>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td>Sample Test</td>
+                                      <td>Social Chater</td>
+                                      <td>2/29/2016 4:16:11 AM</td>
+                                      <td>
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Deactivate"></i>
+                                          <i class="fa fa-archive" data-toggle="tooltip" data-placement="top" title="Archive"></i>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">
+                                          <strong>Clients :</strong>
+                                          <span>H3</span><br>
+                                          <strong>Feed Url :</strong>
+                                          <span>demo.url</span>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table> -->
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+                 <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="pagination-div pull-right" ng-show="rssFeedDatas.length > 0">
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left"></i> Previous</button></li>
+                                      
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>  <!-- end of .pagination -->
+                </div>
+                <div class="row form-view" ng-show="hideAddUserForm">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="rssfeedsForm" class="styles">
+                                
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="title">Title<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && rssfeedsForm.rssTitle.$invalid]">
+                                            <input type="text" class="form-control" id="title" ng-pattern="/^[ a-zA-Z0-9]{1,20}$/" ng-model="rssTitle" name="rssTitle" required>
+                                                 <span class=required ng-show="submitted && rssfeedsForm.rssTitle.$error.required">Give Title</span>
+                                                <span class=required ng-show="rssfeedsForm.rssTitle.$error.pattern">Title is Invalid</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && rssfeedsForm.rssStatus.$invalid]">
+                                            <select class="form-control" id="status" ng-model="rssStatus" name="rssStatus" required>
+                                                <option value=" ">Select</option>
+                                                <option value="0">Active</option>
+                                                <option value="1">Deactivate</option>
+                                                 <option ng-show="editForm" value="9">Archive</option>
+                                            </select>
+                                                 <span class=required ng-show="submitted && rssfeedsForm.rssStatus.$error.required">Select Status</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>   
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && rssfeedsForm.siteclientType.$invalid]">
+                                              <select class="form-control" id="siteclientType" ng-options="item.id as item.ClientName for item in rssClientSelection" ng-model="siteclientType" name="siteclientType" required multiple><option value=""  >-- Select Client --</option></select>
+                                                 <span class=required ng-show="submitted && rssfeedsForm.siteclientType.$error.required">Select Client</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="category">Category<span class=required> *</span></label>
+                                         <div class="control-group" ng-class=" {true: 'error'}[submitted && rssfeedsForm.sitecategoryType1.$invalid]">
+                                              <select class="form-control" id="sitecategoryType1" ng-options="item.category_id as item.category_name for item in rssCategorySelection" ng-model="sitecategoryType1" name="sitecategoryType1" required><option value="" selected >-- Select Category --</option></select>
+
+                                                <span class=required ng-show="submitted && rssfeedsForm.sitecategoryType1.$error.required">Select Category</span>                                            
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="form-group">
+
+                                    <label for="feedurl">Feed Url<span class=required> *</span></label>
+                                    <textarea class="form-control" id="feedurl" rows="3" ng-model="rssUrl" name="rssUrl" required></textarea>
+                                    <span class=required ng-show="submitted && rssfeedsForm.rssUrl.$error.required">Give Feed Url</span>                                                                                      </div>
+
+                            </div>
+
+                        </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix">
+                                      
+                                         <button type="button" class="pri-cus-buttons pull-right" ng-click="AddClient();"
+                                          ng-show="showSaveButton">Save</button>
+                                        <button type="button" class="pri-cus-buttons pull-right" ng-click="editclientSubmit();" ng-show="!showSaveButton">Save</button>
+                                      <button ng-click="cancelUser();" type="button" class="btn btn-default pull-right">Cancel</button>
+                                    </div>
+                                </div>
+                                
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

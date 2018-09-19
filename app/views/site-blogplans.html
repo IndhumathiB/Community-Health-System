@@ -1,0 +1,280 @@
+
+   
+<div class="main" ng-show="ShowAdminForm">
+  
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+
+                                     <li class="" ng-show="!hideNavBar && !editForm">Manage Blog Plans</li>
+
+                                             <li class="link" ng-click="cancelUser();" ng-show="hideNavBar"><a>Manage Blog Plans</a></li>
+                                        <li class="link" ng-click="cancelUser();" ng-show="editForm"><a>Manage Blog Plans</a></li>
+
+
+                                        <li class="" ng-show="hideNavBar">Create New Blog</li>
+                                         <li class="" ng-show="editForm">Edit Blog</li>
+
+
+
+                         <!--            <li class="link" ng-click="cancelUser();"><a>Manage Blog Plans</a></li>
+                                      <li class="" ng-show="hideNavBar">Create New Requset</li> -->
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                <button class="pri-cus-buttons pull-right visible-md-block visible-lg-block"  ng-show="!hideNavBar && !editForm" ng-click="shSideNav(); showAddForm();" ><i class="fa fa-plus"></i> Create New Blogplan</button>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                       <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+              <div class="list-view">
+               <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Manage Blog Plans</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       <button class="pri-cus-buttons" ng-click="showAddForm()" ng-show="!hideNavBar && !editForm"><i class="fa fa-plus"></i> Create New Blogplan</button>
+                   </div>
+               </div>
+                <!-- end of .filter-container -->
+                <div class="row" ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+                          <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                    <th ng-click="clientManagementSort(asc=!asc,'Client');">Client <i class="fa fa-sort"></i></th>
+                                      <th>Run Date</th>
+                                    <th ng-click="clientManagementSort(asc=!asc,'topic');">Topic <i class="fa fa-sort"></i></th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody ng-repeat="content in siteManagementsDatas | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                  <tr>
+                                         <td>{{content.Client}}</td>
+                                     <td >{{content.runDate}}</td>
+                                      <td>{{content.topic}}</td>
+                 
+                                      <td>
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete" tooltip ng-click="deleteblog(content.id)"></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit" tooltip ng-click="editClient(content.id)"></i>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">{{content.notes}}</td>
+                                  </tr>
+                               <!--    <tr>
+                                      <td>H1</td>
+                                      <td>27/02/2016</td>
+                                      <td>This is sample notes </td>
+                                      <td>
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">This is sample notes for sample blog plan</td>
+                                  </tr>
+                                  <tr>
+                                      <td>H1</td>
+                                      <td>27/02/2016</td>
+                                      <td>Testing Blog</td>
+                                      <td>
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete"></i>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                                      </td>
+                                  </tr>
+                                  <tr>
+                                      <td colspan="4">Testing Blog</td>
+                                  </tr> -->
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+             <div class="row" ng-show="!hideAddUserForm" >
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="pagination-div pull-right" ng-show="siteManagementsDatas.length > 0">
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left" ></i> Previous</button></li>
+                                     
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end of .pagination -->  <!-- end of .pagination -->
+                </div>
+                   <div class="row form-view" ng-show="hideAddUserForm">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="siteblogplansForm" class="styles">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && siteblogplansForm.noticeStatus.$invalid]">
+                                         <select class="form-control" id="siteclientType" ng-model="siteclientType" name="siteclientType" ng-options="item.id as item.ClientName for item in clientSelection"  required></select>
+                                             <span class=required ng-show="submitted && siteblogplansForm.siteclientType.$error.required">Select Client</span>                                                 
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="rdate">Run Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && siteblogplansForm.blogDate.$invalid]"> 
+                                                <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                                    <input  class="form-control" id="st_date" ng-model="blogDate" name="blogDate" required>
+                                               </datepicker>
+                                                <span class=required ng-show="submitted && siteblogplansForm.blogDate.$error.required">Select Rundate</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                            
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="topic">Topic<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && siteblogplansForm.blogTopic.$invalid]">
+                                            <textarea class="form-control" id="topic" rows="3" ng-model="blogTopic" name="blogTopic" required></textarea>
+                                                 <span class=required ng-show="submitted && siteblogplansForm.blogTopic.$error.required">Give Topic</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Notes</label>
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="blogNotes" ></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix">
+                                          <button type="button" class="pri-cus-buttons pull-right" ng-click="editclientSubmit();" ng-show="!showSaveButton">Save</button>
+                                   
+                                         <button type="button" class="pri-cus-buttons pull-right" ng-click="AddClient();"
+                                          ng-show="showSaveButton">Save</button>
+                                       <button  ng-click="cancelUser();" type="button" class="btn btn-default pull-right">Cancel</button>
+                                    </div>
+                                </div>
+                                
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--
+<script type="text/javascript">
+$(document).ready(function(){
+    
+    $(".filter-fields").hide();
+    $('.dropdown-toggle').dropdown();
+    
+    $(window).trigger('resize');
+    
+    $(".navbar-fixed-top .pri-cus-buttons").click(function(){
+        //$(this).addClass("hide");
+        $("div.list-view").addClass("animated fadeOutUp").addClass("hide");
+        $("div.form-view").removeClass("hide").addClass("animated fadeInUp");
+    });
+    
+    $("form.styles .btn.btn-default").click(function(){
+        //$(this).addClass("hide");
+        $("div.form-view").addClass("hide").addClass("fadeOutDown");
+        $("div.list-view").removeClass("hide fadeOutUp").addClass("fadeInDown");
+    });
+    
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
+    
+    $(".cus-breadcrumb + .hidden-md.hidden-lg a").click(function(){
+        $("#side-nav").toggleClass("collapsed");
+    });
+    
+    $(".brand-logo a").click(function(){
+        $("#side-nav").toggleClass("collapsed");
+    });
+    
+    $(window).resize(function(){
+        var value = $(window).width();
+      if(value<=992) {
+            $("#side-nav").addClass("collapsed");
+        } else {
+            $("#side-nav").removeClass("collapsed");
+        }
+    });
+    
+    //When page is ready hide the Sub Navs
+  $(".sub-navs").hide();
+    
+    // Accordion Toggle for Main Nav in Side bar
+  $(".nav[data-accordion]").on( "click", "li", function( event ) {
+    if($(this).hasClass("current")) {
+      //$(this).removeClass("active")
+    } else {
+      $(".nav[data-accordion] li").removeClass("current");
+      $(this).addClass("current");
+    }
+    
+    /*if($(this).hasClass("parent")) {
+      $("li.parent").find(".fa-plus").removeClass("fa-minus");
+      $(this).find(".fa-plus").addClass("fa-minus");
+    } else {
+      $("li.parent").find(".fa-plus").removeClass("fa-minus");
+    }*/
+    
+    });
+  
+  $(".nav[data-accordion] .sub-navs").on( "click", "li", function( event ) {
+    if($(this).hasClass("active")) {
+      //$(this).removeClass("active")
+    } else {
+      $(".nav[data-accordion] li").removeClass("active");
+      $(this).addClass("active");
+    }
+    });
+    
+});
+</script>-->

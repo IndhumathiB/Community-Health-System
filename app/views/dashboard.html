@@ -1,0 +1,446 @@
+
+<div class="main" ng-show="ShowAdminForm">
+
+  <!-- #side-nav End -->
+    
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                    <li class=""><a>Dashboard</a></li>
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                
+                            </div>
+                            <!-- /.navbar-collapse -->
+                         <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+               <div class="list-view">
+                <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Dashboard</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       
+                   </div>
+               </div>
+                <div class="row" ng-show="hidewritterJobContent">
+                    <div class="col-lg-12 filter-container finline">
+                        <label ng-model="collapsed" ng-click="collapsed = !collapsed"><i class="fa fa-chevron-down"></i> Filter</label>
+                        <div class="filter-fields form-inline" ng-show="collapsed" >
+                            <div class="form-group">
+                                <label for="form_user">Client</label>
+                                <select class="form-control" id="siteclientType" ng-options="item.id as item.ClientName for item in Clients" ng-model="siteclientType" name="siteclientType" required ng-change="FilterByClient1(siteclientType);">
+                                    <option value="" selected style=''>-- Select Client Type --</option>
+                                </select>
+                            </div>
+                                <button type="button" class="btn btn-default mar-0-5" ng-click="Reset();">Reset</button>
+                        </div>
+                      
+                        
+                        
+                    </div>
+                </div> <!-- end of .filter-container --> 
+                
+                <div class="row">
+                    <div class="col-lg-9" >
+                        <div class="panel panel-default">
+                          <div class="panel-heading clearfix">
+                            <div class="pull-left mar-10-0">
+                                <h5 class="panel-title text-left">Show Content</h5>
+                            </div>
+                            <div class="pull-right">
+                                <a class="mar-0-10" ng-click="fngoToManageContentPage();" style="cursor:pointer;"  ng-show="hidewritterJobContent">Go to the list >></a>
+                                <button class="pri-cus-buttons" ng-click="fnCreateContent();" ng-show="hidewritterJobContent"><i class="fa fa-plus"  ></i> Create New Content</button>
+                            </div>
+                          </div>
+                          <div class="panel-body"  >
+                            <div class="color-code-filter" ng-show="hidewritterJobContent">
+                                    <div class="clearfix"> 
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-5 scheduled" ng-click="fnAssigned();">Scheduled</button>
+                                       </div>
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-5 pending-approval" ng-click="fnPending();">Pending</button>
+                                       </div>
+                                        <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-5 declined" ng-click="fnDeclined();">Declined</button>
+                                       </div>
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-5 cancelled-by-late-approve" ng-click="fnApproved();">Posted</button>
+                                       </div>
+                                        <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-5 content-template" ng-click="fnshowAll();">Cancelled</button>
+                                       </div>
+                                       
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="" ng-show="hidewritterJobContent">
+                                    <div class="">
+                                        <div class="table-responsive cus-cards">
+                                          <table wt-responsive-table class="table table-striped responsive">
+                                              <thead>
+                                                  <tr>
+                                                      <th>&nbsp;</th>
+                                                      <th>Content Name</th>
+                                                      <th>Platform</th>
+                                                      <th>Category</th>
+                                                      <th>Status</th>
+                                                      <th class="whitspace">Scheduled On</th>
+                                                      <th>Saved</th>
+                                                      <th>&nbsp;</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody ng-repeat="Content in Contents  | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                                  <tr class="font-color pending-approval">
+                                                      <td><i class="fa fa-file-text-o not-link"></i></td>
+                                                      <td>{{Content.ContentName}}</td>
+                                                      <td>{{Content.PlatformName}}</td>
+                                                      <td>{{Content.CategoryName}}</td>
+                                                      <td>{{Content.StatusName}}</td>
+                                                      <td >{{Content.ScheduledOn}}</td>
+                                                     <td >{{Content.Saved}}</td>
+
+                                                      <td class="whitspace">
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEdit==true" ng-click="fnlnkEdit(Content.Permission.lnkEdit,Content.id,Content.PlatformName)"></i>
+
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditFbPack==true" ng-click="fnlnkEditFbPack(Content.Permission.lnkEditFbPack,Content.id,Content.PlatformName)"></i>
+
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditPack==true" ng-click="fnlnkEditPack(Content.Permission.lnkEditPack,Content.id,Content.PlatformName)"></i>
+
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditTask==true" ng-click="fnlnkEditTask(Content.Permission.lnkEditTask,
+                                                          Content.id,Content.PlatformName)"></i>
+
+                                                           <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditTwPack==true" ng-click="fnlnkEditTwPack(Content.Permission.lnkEditTwPack,Content.id,Content.PlatformName)"></i>
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td colspan="12">
+                                                          <strong>Brief :</strong>
+                                                          <span>{{Content.Content}}</span>
+                                                      </td>
+                                                  </tr>
+                                           
+
+                                              </tbody>
+                                          </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                 <div class="color-code-filter" ng-show="!hidewritterJobContent">
+                                    <div class="clearfix">
+                                        <div class="pull-left mar-10-0">
+                                            <label for="edate">Status color codes :</label>
+                                       </div>
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-10 content-template" ng-click="fnshowAll1();">Show All</button>
+                                       </div>
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-10 scheduled" ng-click="fnAssigned1();">Assigned</button>
+                                       </div>
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-10 pending-approval" ng-click="fnPending1();">Pending</button>
+                                       </div>
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-10 cancelled-by-late-approve" ng-click="fnApproved1();">Approved</button>
+                                       </div>
+                                       <div class="pull-left">
+                                            <button type="button" class="btn btn-default mar-10 declined" ng-click="fnDeclined1();">Declined</button>
+                                       </div>
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="" ng-show="!hidewritterJobContent">
+                                    <div class="">
+                                        <div class="table-responsive cus-cards">
+                                          <table wt-responsive-table class="table table-striped responsive">
+                                              <thead>
+                                                  <tr>
+                                                      <th>&nbsp;</th>
+                                                      <th>Title</th>
+                                                      <th>Platform</th>
+                                                      <th>Category</th>
+                                                      <th>Editor</th>
+                                                         <th>Client</th>
+                                                         <th>Created By</th>
+                                                         <th>Amount</th>
+                                                      <th>Status</th>
+                                                      <th class="whitspace">Due Date</th>
+                                                      <th>Saved on</th>
+                                                      <th>&nbsp;</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody ng-repeat="Content in WriterJobs | filter:taskToFilter   | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                                  <tr class="font-color pending-approval">
+                                                      <td><i class="fa fa-file-text-o not-link"></i></td>
+                                                      <td>{{Content.title}}</td>
+                                                      <td>{{Content.platform}}</td>
+                                                      <td>{{Content.category}}</td>
+                                                        <td>{{Content.editor}}</td>
+                                                         <td>{{Content.client}}</td>
+                                                          <td>{{Content.createdBy}}</td>
+                                                           <td>{{Content.amount}}</td>
+                                                      <td>{{Content.status}}</td>
+                                                      <td >{{Content.dueDate}}</td>
+                                                     <td >{{Content.saveDate}}</td>
+
+                                                      <td class="whitspace">
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEdit==true" ng-click="fnlnkEdit(Content.Permission.lnkEdit,Content.id,Content.PlatformName)"></i>
+
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditFbPack==true" ng-click="fnlnkEditFbPack(Content.Permission.lnkEditFbPack,Content.id,Content.PlatformName)"></i>
+
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditPack==true" ng-click="fnlnkEditPack(Content.Permission.lnkEditPack,Content.id,Content.PlatformName)"></i>
+
+                                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditTask==true" ng-click="fnlnkEditTask(Content.Permission.lnkEditTask,
+                                                          Content.id,Content.PlatformName)"></i>
+
+                                                           <i class="fa fa-pencil-square-o" data-toggle="tooltip" tooltip data-placement="top" title="Edit"
+                                                          ng-show="Content.Permission.lnkEditTwPack==true" ng-click="fnlnkEditTwPack(Content.Permission.lnkEditTwPack,Content.id,Content.PlatformName)"></i>
+                                                      </td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td colspan="12">
+                                                          <strong>Brief :</strong>
+                                                          <span>{{Content.descr}}</span>
+                                                      </td>
+                                                  </tr>
+                                           
+
+                                              </tbody>
+                                          </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                        <div class="row" >
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>                                    
+                                </ul>
+                            </div>
+
+                        <div class="pagination-div pull-right" ng-show="Contents.length > 0">                            
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left" ></i> Previous</button></li>
+                                    
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+                      
+                            <div ng-repeat="n in range()">
+                          <div class="pagination-div pull-right" ng-hide="n.length == 0">                            
+                              
+                            </div>
+                      </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end of .pagination -->
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3"  ng-show="hidewritterJobContent" >
+                        <div class="panel panel-default">
+                          <!-- Default panel contents -->
+                          <div class="panel-heading ">
+                            <h5 class="panel-title text-left link">News &amp; Information</h3>
+                          </div>
+                          <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="news in NewsInformations"><a  ng-href="{{news.feedURL}}" target="_blank">{{news.Title}}<i class="fa fa-chevron-right pull-right"
+                           ></i></a></li>
+                          </ul>
+                        </div>
+                        <div class="panel panel-default">
+                          <div class="panel-heading ">
+                            <h5 class="panel-title text-left link">Social Chatter</h3>
+                          </div>
+                          <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="social in SocialChatters"  ><a ng-href="{{social.feedURL}}" target="_blank">{{social.Title}}<i class="fa fa-chevron-right pull-right"></i></a></li>
+                          </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--- Show Content & News feeds End --->
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                          <!-- Default panel contents -->
+                          <div class="panel-heading "  ng-show="hidewritterJobContent">
+                            <h5 class="panel-title text-left" >Content Calender</h3>
+                            
+                          </div>
+                          <div class="panel-body"  ng-show="hidewritterJobContent">
+                            <strong></strong>
+
+                  <div >
+  <h2 class="text-center">{{ calendarTitle }}</h2>
+
+  <div class="row">
+
+<div class="col-md-12  text-center">
+      <div class="btn-group">
+
+        <button
+          class="btn btn-primary"
+          mwl-date-modifier
+          date="viewDate"
+          decrement="calendarView">
+          Previous
+        </button>
+        <button
+          class="btn btn-default"
+          mwl-date-modifier
+          date="viewDate"
+          set-to-today>
+          Today
+        </button>
+        <button
+          class="btn btn-primary"
+          mwl-date-modifier
+          date="viewDate"
+          increment="calendarView">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <br class="visible-xs visible-sm">
+
+  </div>
+
+  <br>
+
+  <mwl-calendar
+    events="events"
+    view="calendarView"
+    view-title="calendarTitle"
+    view-date="viewDate"
+    on-event-click="eventClicked(calendarEvent)"
+    on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+   
+ 
+    cell-is-open="isCellOpen"
+    day-view-start="06:00"
+    day-view-end="22:00"
+    day-view-split="30"
+    cell-modifier="modifyCell(calendarCell)">
+  </mwl-calendar>
+
+  <br><br><br>
+
+</div>
+<!--end of calender...-->
+                    
+                          </div>
+
+                          
+                        </div>
+                    </div>
+                    <div class="col-lg-6"  ng-show="hidewritterJobContent">
+                        <div class="panel panel-default">
+                          <!-- Default panel contents -->
+                          <div class="panel-heading ">
+                            <h5 class="panel-title text-left">Notices / Updates</h3>
+                            
+                          </div>
+                          
+                          <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="notice in Notices">
+                                <div class="clearfix">
+                                    <div class="pull-left">
+                                        <span class="text-left link"><a class="">{{notice.Title}}</a></span>
+                                    </div>
+                                    <div class="pull-right">
+                                        <span >{{notice.SavingDate}}</span>
+                                    </div>
+                                </div>
+                                <p class="text-muted">{{notice.Message}}</p>
+                            </li>
+                          </ul>
+                          
+                        </div>
+                    </div>
+                </div>
+                <!--- End Calender & Notice Content ---->
+                
+                <div class="row"  ng-show="hidewritterJobContent">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                          <!-- Default panel contents -->
+                          <div class="panel-heading ">
+                            <h5 class="panel-title text-left">Social Media Reports</h3>
+                            
+                          </div>
+                          
+                          <ul class="list-group" style="height: auto;
+    max-height: 500px;
+    overflow-y: auto;">
+                            <li class="list-group-item" ng-repeat="mediaReport in SocialMediaReports" >
+                                <i class="fa fa-file-pdf-o not-link mar-0-10"></i>
+                                <span class="text-left link"><a class="" ng-href="http://166.62.84.37/{{mediaReport.pdf_file}}" target="_blank">{{mediaReport.hospitalName}} {{mediaReport.saveDate}}</a></span>
+                            </li>
+                          </ul>
+                          
+                        </div>
+                    </div>
+                </div>
+                <!---- PDF Content End ---->
+                 <!-- end of content -->
+                
+                
+               </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+  #cal-week-box {
+  display: none;
+}
+</style>

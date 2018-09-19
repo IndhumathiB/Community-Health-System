@@ -1,0 +1,1561 @@
+<div class="main" ng-show="ShowAdminForm">
+   
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                  <!--   <li class=""><a>Writer Dashboard</a></li> -->
+
+                                      <li class="" ng-show="!hideNavBar && !editForm">Writer Dashboard</li>
+
+                                             <li class="link" ng-click="cancelUser();" ng-show="editForm"><a>Writer Dashboard</a></li>
+                                                  <li class="" ng-show="editForm">Details</li>
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click=""><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                
+                            </div>
+                            <!-- /.navbar-collapse -->
+                               <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+               <div class="list-view">
+                <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Writer Dashboard</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       
+                   </div>
+               </div>
+                <div class="row"  ng-show="!hideAddUserForm">
+                    <div class="col-lg-12 filter-container finline">
+                        <label ng-model="collapsed" ng-click="collapsed = !collapsed"><i class="fa fa-chevron-down"></i> Filter</label>
+                        <div class="filter-fields form-inline" ng-show="collapsed">
+                           <div class="row mar-10-0">
+                                
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="client">By writer</label>
+                                        <select class=form-control id="edi1" ng-model="edi1" name="edi1" ng-options="edi.id as edi.WriterName for edi in WritersLookup1" required ng-change="fnFilterGrid(edi1)">
+                                            <option value="" selected style=''>-- Select Editor Type --</option>
+                                        </select>
+                                        
+                                    </div>
+                                    <button type="button" class="btn btn-default mar-5" ng-click="Reset();">Reset</button>
+                                </div>
+
+                                
+                                
+                            </div>
+                      
+                        </div>
+                        
+                        <div class="color-code-filter">
+                            <div class="clearfix">
+                                
+                               <div class="pull-left">
+                                    <button type="button" class="btn btn-default mar-10 content-template" ng-click="Reset(); test()" >Show All</button>
+                               </div>
+                               <div class="pull-left">
+                                    <button type="button" class="btn btn-default mar-10 scheduled" ng-click="fnAssigned(); test()">Assigned</button>
+                               </div>
+                               <div class="pull-left">
+                                    <button type="button" class="btn btn-default mar-10 pending-approval" ng-click="fnPendingApproval(); test()">Pending</button>
+                               </div>
+                               <div class="pull-left">
+                                    <button type="button" class="btn btn-default mar-10 cancelled-by-late-approve" ng-click="fnApproved(); test()">Approved</button>
+                               </div>
+                               <div class="pull-left">
+                                    <button type="button" class="btn btn-default mar-10 declined" ng-click="fnDeclined(); test()">Declined</button>
+                               </div>
+                               
+                               
+                               
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div> <!-- end of .filter-container --> <!-- end of .filter-container -->
+                <div class="row"  ng-show="!hideAddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+                          <table class="table table-striped">
+                              <thead>
+                                  <tr>
+                                     <th ng-click="userManagementSort(asc=!asc,'title');">Title <i class="fa fa-sort"></i></th>
+                                      <th ng-click="userManagementSort(asc=!asc,'platform');">Platform <i class="fa fa-sort"></i></th>
+                                      <th ng-click="userManagementSort(asc=!asc,'category');">Category <i class="fa fa-sort"></i></th>
+                                      <th ng-click="userManagementSort(asc=!asc,'writer');">Writer <i class="fa fa-sort"></i></th>
+                                      <th ng-click="userManagementSort(asc=!asc,'editor');">Editor <i class="fa fa-sort"></i></th>
+                                      <th class="whitspace">Created By</th>
+                                       <th ng-click="userManagementSort(asc=!asc,'client');">Client <i class="fa fa-sort"></i></th>
+                                      <th>Amount</th>
+                                      <th class="whitspace">Due Date</th> 
+                                      <th>Saved On</th>
+                                      <th>Status</th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody  ng-repeat="lists in WriterJobs1  | filter:taskToFilter | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage" >
+                                  <tr class="font-color cancelled-by-late-approve" ng-if="lists.status=='Approved'" style="    background: #FF9800;" >
+                                      <td>{{lists.title}}</td>
+                                      <td>
+                                          
+                                          <span class="whitspace">{{lists.platform}}</span>
+                                      </td>
+                                      <td>{{lists.category}}</td>
+                                      <td>{{lists.writer}}</td>
+                                      <td>{{lists.editor}}</td>
+                                      <td>{{lists.createdBy}}</td>
+                                      <td>{{lists.client}}</td>
+                                      <td>USD {{lists.amount}}</td>
+                                      <td >{{lists.dueDate}}</td>
+                                     <td >{{lists.saveDate}}</td>
+                                      <td>{{lists.status}}</td>
+                                 <td class="whitspace">
+                                          <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].taskDetail==true" ng-click="taskDetail1(lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].taskDelete==true" ng-click="taskDelete1(lists.id)"></i>
+
+                                         <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].packageDetail==true" ng-click="packageDetail1(lists.platform,lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].packageDelete==true" ng-click="packageDelete1(lists.id)"></i>
+                                    
+                                        </td>
+                                  </tr>
+
+                                   <tr ng-if="lists.status=='Approved'" >
+                                      <td colspan="12">
+                                          <strong>Brief :</strong>
+                                          <span>{{lists.descr}}</span>
+                                      </td>
+                                  </tr>
+
+                                     <tr class="font-color pending-approval" ng-if="lists.status=='Pending Approval'" >
+                                      <td>{{lists.title}}</td>
+                                      <td>
+                                          <span class="whitspace">{{lists.platform}}</span>
+                                      </td>
+                                      <td>{{lists.category}}</td>
+                                      <td>{{lists.writer}}</td>
+                                      <td>{{lists.editor}}</td>
+                                      <td>{{lists.createdBy}}</td>
+                                      <td>{{lists.client}}</td>
+                                      <td>{{lists.amount}}</td>
+                                      <td >{{lists.dueDate}}</td>
+                                     <td >{{lists.saveDate}}</td>
+                                      <td>{{lists.status}}</td>
+                                      <td class="whitspace">
+                                          <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].taskDetail==true" ng-click="taskDetail1(lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].taskDelete==true" ng-click="taskDelete1(lists.id)"></i>
+
+                                         <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].packageDetail==true" ng-click="packageDetail1(lists.platform,lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].packageDelete==true" ng-click="packageDelete1(lists.id)"></i>
+                                    
+                                        </td>
+                                  </tr>
+
+                                        <tr ng-if="lists.status=='Pending Approval'" >
+                                      <td colspan="12">
+                                          <strong>Brief :</strong>
+                                          <span>{{lists.descr}}</span>
+                                      </td>
+                                  </tr>
+
+                                     <tr class="font-color scheduled" ng-if="lists.status=='Assigned'" >
+                                      <td>{{lists.title}}</td>
+                                      <td>
+                                          
+                                          <span class="whitspace">{{lists.platform}}</span>
+                                      </td>
+                                      <td>{{lists.category}}</td>
+                                      <td>{{lists.writer}}</td>
+                                      <td>{{lists.editor}}</td>
+                                      <td>{{lists.createdBy}}</td>
+                                      <td>{{lists.client}}</td>
+                                      <td>{{lists.amount}}</td>
+                                     <td >{{lists.dueDate}}</td>
+                                     <td >{{lists.saveDate}}</td>
+                                      <td>{{lists.status}}</td>
+                                       <td class="whitspace">
+                                          <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].taskDetail==true" ng-click="taskDetail1(lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].taskDelete==true" ng-click="taskDelete1(lists.id)"></i>
+
+                                         <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].packageDetail==true" ng-click="packageDetail1(lists.platform,lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].packageDelete==true" ng-click="packageDelete1(lists.id)"></i>
+                                    
+                                        </td>
+                                  </tr>
+                                    <tr ng-if="lists.status=='Assigned'" >
+                                      <td colspan="12">
+                                          <strong>Brief :</strong>
+                                          <span>{{lists.descr}}</span>
+                                      </td>
+                                  </tr>
+
+                                     <tr class="font-color declined" ng-if="lists.status=='Declined'" >
+                                      <td>{{lists.title}}</td>
+                                      <td>
+                                          
+                                          <span class="whitspace">{{lists.platform}}</span>
+                                      </td>
+                                      <td>{{lists.category}}</td>
+                                      <td>{{lists.writer}}</td>
+                                      <td>{{lists.editor}}</td>
+                                      <td>{{lists.createdBy}}</td>
+                                      <td>{{lists.client}}</td>
+                                      <td>{{lists.amount}}</td>
+                                     <td >{{lists.dueDate}}</td>
+                                     <td >{{lists.saveDate}}</td>
+                                      <td>{{lists.status}}</td>
+                                      <td class="whitspace">
+                                          <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].taskDetail==true" ng-click="taskDetail1(lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].taskDelete==true" ng-click="taskDelete1(lists.id)"></i>
+
+                                         <i class="fa fa-info-circle" data-toggle="tooltip" tooltip data-placement="top" title="Detail"  ng-show="lists.permission[0].packageDetail==true" ng-click="packageDetail1(lists.platform,lists.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" tooltip data-placement="top" title="Delete" ng-show="lists.permission[0].packageDelete==true" ng-click="packageDelete1(lists.id)"></i>
+                                    
+                                        </td>
+                                  </tr>
+
+                                    <tr ng-if="lists.status=='Declined'" >
+                                      <td colspan="12">
+                                          <strong>Brief :</strong>
+                                          <span>{{lists.descr}}</span>
+                                      </td>
+                                  </tr>
+                                
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+                
+                    <div class="row" ng-show="!hideAddUserForm">
+                              <div ng-hide=" returnedData.length < 1" class="col-sm-12 col-md-12 col-lg-12">
+                              <div class="clearfix">
+                              <div class="pull-left">
+                              <ul class="cus-pagination reset">
+                               <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+
+                              </ul>
+                              </div>
+
+                           <div class="pagination-div pull-right">
+                               <nav>
+                                 <ul class="cus-pagination-pager reset">
+                                   <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left" ></i> Previous</button></li>
+                                    
+                                   <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                 </ul>
+                               </nav>
+                           </div>
+
+                       </div>
+                   </div>
+               </div> <!-- end of .pagination -->
+
+<!-- end of .pagination -->
+               </div>
+
+                       <div class="row form-view" ng-show="packForm">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="create-new-package" class="styles">
+                               <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="pname">Package Name <span class=required> *</span></label>
+                                            <input type="text" class="form-control" id="pname" ng-model="packageName">
+                                            <span class=required ng-show="submitted && !packageName">Give Package Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client <span class=required> *</span></label>
+                                               <select class=form-control id="cli" ng-model="cli" name="cli" ng-options="cli.id as cli.ClientName for cli in Clients1" required >
+                                    <option value="" selected style=''>-- Select Client Type --</option>
+                                    </select>
+                                            <span class=required ng-show="submitted && !cli">Select Client Type</span>
+                                        </div>
+                                    </div>
+
+
+                                          <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="amount">Amount <span class=required> *</span></label>
+                                            <input type="text" class="form-control" id="amount" placeholder="In USD" ng-model="amount">
+                                            <span class=required ng-show="submitted && !amount">Amount required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6" ng-show="packList1=='twitter'">
+                                        <div class="form-group">
+                                            <label for="sdate">Posting Date <span class=required> *</span></label>
+                                         <!--    <input type="text" class="form-control" id="sdate"> -->
+                                             <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                     <input  class="form-control" id="sdate" ng-model="sdate">
+                                     </datepicker>
+                                        </div>
+                                        <span class=required ng-show="submitted && !sdate">Select Start Date</span>
+                                    </div>
+
+
+                                          <div class="col-sm-12 col-md-6" ng-show="packList1=='facebook'">
+                                        <div class="form-group">
+                                            <label for="sdate">Posting Date <span class=required> *</span></label>
+                                         <!--    <input type="text" class="form-control" id="sdate"> -->
+                                             <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                     <input  class="form-control" id="sdate" ng-model="sdate">
+                                     </datepicker>
+                                        </div>
+                                        <span class=required ng-show="submitted && !sdate">Select Start Date</span>
+                                    </div>
+
+
+                                          <div class="col-sm-12 col-md-6" ng-show="packList1=='pack'">
+                                        <div class="form-group">
+                                            <label for="sdate">Start Date <span class=required> *</span></label>
+                                         <!--    <input type="text" class="form-control" id="sdate"> -->
+                                             <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                     <input  class="form-control" id="sdate" ng-model="sdate">
+                                     </datepicker>
+                                        </div>
+                                        <span class=required ng-show="submitted && !sdate">Select Start Date</span>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="ddate">Due Date  <span class=required> *</span></label>
+                                      <!--       <input type="text" class="form-control" id="ddate"> -->
+                                           <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                               <input  class="form-control" id="ddate" ng-model="ddate">
+                                         </datepicker>
+                  
+                                        </div> 
+                                        <span class=required ng-show="submitted && !ddate">Select Due Date</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Notes</label>
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="editor">Editor  <span class=required> *</span></label>
+                                                     <select class=form-control id="edi1" ng-model="edi1" name="edi1" ng-options="edi.id as edi.EditorName for edi in Editors1" required >
+                                    <option value="" selected style=''>-- Select Editor Type --</option>
+                                    </select>
+                                            <span class=required ng-show="submitted && !edi1">Select Editor Type</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="writer">Writer <span class=required> *</span></label>
+                                            <select class=form-control id="wri1" ng-model="wri1" name="wri1" ng-options="wri.id as wri.WriterName for wri in Writers1" required >
+                                    <option value="" selected style=''>-- Select Writer Type --</option>
+                                    </select>
+                                         <span class=required ng-show="submitted && !wri1">Select Writer Type</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                              
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                          <label>
+                                            <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-checked="Archived == 1" ng-model="Archived">
+                                            Archived
+                                          </label>
+                                        </div>
+                                    </div>
+
+                                      <div class="col-sm-4" ng-show="packList1=='pack'">
+                                        <div class="checkbox">
+                                          <label>
+                                            <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-checked="singleDay == 1" ng-model="singleDay" >
+                                            Single Day Package
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 btn-center">
+                                        <button type="button" class="btn btn-default mar-5" ng-click="cancelUser();">Cancel</button>
+                                        <button type="button" class="sec-cus-buttons mar-5" ng-click="contentIsReady(true);" ng-show="showContentSend">
+                                           Content is ready, send to editor
+                                         </button>
+                                        <button type="button" class="sec-cus-buttons mar-5" ng-click="sendClientForApproval();">Send to Client for Approval</button>
+                                        <button type="button" class="sec-cus-buttons mar-5" ng-click="approveAsClient();">Approve as Client</button>
+                                        
+                                        <!-- <button type="button" class="pri-cus-buttons mar-0-5" ng-click="SavePackage();">Save</button> -->
+                                    </div>
+                                </div>
+                                
+                               
+                            </form>
+                 <form class="styles" ng-show="UpdateshowOnlySingleDayPackage">
+                                <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title form-inline" data-toggle="collapse" data-parent="#accordion" ng-show="FacebookContent && TwitterContent">Day 1 - {{FacebookContent[0].GroupHeaderText}} 
+<i class="fa fa-chevron-down pull-right"  href="#Shr" ></i><ng-timepicker id="timePicker" ng-show="packList1 == 'pack'" class="dropdown"  ng-model="weklyctrl.posttime" object-to-inject="weklyctrl.injectedObject"></ng-timepicker></h3>
+                                    </div>
+                                    <div id="Shr{{$index + 1}}" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-4" ng-repeat="fbontent in FacebookContent">
+                                                      <legend>Facebook Content</legend>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbmicro">Microblog</label>
+                                                                <textarea class="form-control" id="fbmicro" rows="3" ng-model="fbontent.Microblog" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - fbontent.Microblog.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitle">Title</label>
+                                                                <input type="text" class="form-control" id="fbtitle" ng-model="fbontent.Title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitlelink">Title Link</label>
+                                                                <input type="text" class="form-control" id="fbtitlelink" ng-model="fbontent.Titlelink">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbdes">Description</label>
+                                                                <textarea class="form-control" id="fbdes" rows="3" ng-model="fbontent.Description" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - fbontent.Description.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="addpic">Add Picture</label>
+                                                                       <input type="file" ng-model="fbontent.fb_picture" accept="image/gif, image/jpeg, image/png" base-sixty-four-input onchange="document.getElementById('facepackImg').src = window.URL.createObjectURL(this.files[0])">
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="row" ng-show="fbontent.imgLink.length > 25 || fbontent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{fbontent.imgLink}}" id="facepackImg"  ng-model="facepackImg"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removefacepackImg();fbontent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="col-sm-8" >
+                                                    <div class="row">
+                                                        <div class="col-sm-6" ng-repeat="fbImgontent in FbImageContent">
+                                                            <legend>Facebook Image</legend>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="desc">Description</label>
+                                                                        <textarea class="form-control" id="desc" rows="3" ng-model="fbImgontent.Description" maxlength="300" ng-trim="false"></textarea>
+                                                                        <span>{{300 - fbImgontent.Description.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" ng-model="fbImgontent.fb_picture" accept="image/gif, image/jpeg, image/png" base-sixty-four-input onchange="document.getElementById('fbipackImg').src = window.URL.createObjectURL(this.files[0])">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                               <div class="row" ng-show="fbImgontent.imgLink.length > 25 || fbImgontent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{fbImgontent.imgLink}}" id="fbipackImg"  ng-model="fbipackImg"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removefbipackImg();fbImgontent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                        </div>
+                                                        <div class="col-sm-6" ng-repeat="twContent in TwitterContent">
+                                                            <legend>Twitter Content</legend>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="twmicro">Microblog</label>
+                                                                        <textarea class="form-control" id="twmicro" rows="3" ng-model="twContent.Microblog" maxlength="140" ng-trim="false"></textarea>
+                                                                        <span>{{140 - twContent.Microblog.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                               <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" name="fbImg" maxsize="750px" ng-model="twContent.fb_picture" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('twitpackImg').src = window.URL.createObjectURL(this.files[0])">
+                                                                         <span class=required ng-show="sevenpackForm.fbImg.$error.maxsize">Files must not exceed 5000 KB</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                   <div class="row" ng-show="twContent.imgLink.length > 25 || twContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{twContent.imgLink}}" id="twitpackImg"  ng-model="twitpackImg"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removetwitpackImg();twContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                                <legend>URL Shortener</legend>
+                                                                  <div class="row">
+                                                                      <div class="col-sm-6 col-md-6">
+                                                                          <div class="form-group">
+                                                                              <label for="lurl">Long Url</label>
+                                                                              <input type="text" class="form-control" id="lurl" ng-model="twContent.longUrl">
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="col-sm-6 col-md-6">
+                                                                          <div class="form-group">
+                                                                              <label for="surl">Short Url</label>
+                                                                              <input type="text" class="form-control" id="surl" ng-model="twContent.shortedUrl">
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="row">
+                                                                      <div class="col-xs-6 col-sm-6 col-md-6">
+                                                                          <div class="form-group text-right">
+                                                                              <button type="button" class="btn btn-default" ng-click="updateResetURL($index)">Reset</button>
+                                                                              
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="col-sm-6 col-md-6">
+                                                                          <div class="form-group text-left">
+                                                                              <button type="button" class="pri-cus-buttons " ng-click="updateShortURL(twContent.longUrl,$index)">Shorten URL</button>
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>               
+                                                        </div>
+                                                    </div>
+                                   
+                                      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <hr>
+
+                               
+
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="cancelUser();">Cancel</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="fnshowOnlySingleDayPackage();" >Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                               </div>
+
+                            </form>
+
+                             <form class="styles" ng-show="UpdateshowOnlySevenDayPackage">
+                                <div class="panel-group" id="accordion" >
+
+                                <div class="panel panel-default" ng-repeat="main in MainDiv1">
+                              <div class="panel-heading">
+                                            <h3 class="panel-title" ng-show="packList1 == 'facebook'"> <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}">Post {{$index + 1}} - {{main.FacebookContent.GroupHeaderText}} </span>
+<i class="fa fa-chevron-down pull-right" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}"> </i></h3>
+                                            <h3 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}" ng-show="packList1 == 'twitter'">Post {{$index + 1}}  -{{main.TwitterContent.GroupHeaderText}} 
+<i class="fa fa-chevron-down pull-right"></i></h3>
+
+                                            <h3 class="panel-title form-inline" ng-show="packList1 == 'pack'"> <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}">Day {{$index + 1}}  -{{main.FacebookContent.GroupHeaderText}}</span> <i class="fa fa-chevron-down pull-right"  data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}"></i>
+<ng-timepicker id="timePicker" ng-show="packList1 == 'pack'" class="dropdown"  ng-model="main.FacebookContent.weklyctrl.potime" object-to-inject="main.FacebookContent.weklyctrl.injectedObject"></ng-timepicker>
+</h3>
+                                        </div>
+                                    <div id="collapseTwo{{$index + 1}}" class="panel-collapse collapse ">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-4" ng-show="main.FacebookContent!= null">
+                                                    <legend>Facebook Content</legend>
+                                                      <div>
+                                                         <div class="row">
+                                                         <div class="col-sm-12">
+                                                              <input type="radio"  ng-init="FacebookContent[$index].Declined=main.FacebookContent.Declined" ng-model="FacebookContent[$index].Declined" ng-value='false'> Approve
+                                                               <input type="radio"  ng-init="FacebookContent[$index].Declined=main.FacebookContent.Declined"  ng-model="FacebookContent[$index].Declined"  ng-value='true'> Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="  FacebookContent[$index].Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="FacebookContent[$index].DeclineReason=main.FacebookContent.DeclineReason" ng-model="FacebookContent[$index].DeclineReason">
+                                                       </div>
+                                                                </div>
+                                                      </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbmicro">Microblog</label>
+                                                                <textarea class="form-control" id="fbmicro" rows="3" ng-model="main.FacebookContent.Microblog" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - main.FacebookContent.Microblog.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitle">Title</label>
+                                                                <input type="text" class="form-control" id="fbtitle" ng-model="main.FacebookContent.Title" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitlelink">Title Link</label>
+                                                                <input type="text" class="form-control" id="fbtitlelink" ng-model="main.FacebookContent.Titlelink">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbdes">Description</label>
+                                                                <textarea class="form-control" id="fbdes" rows="3" ng-model="main.FacebookContent.Description" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - main.FacebookContent.Description.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="addpic">Add Picture</label>
+                                                                <div >
+                                                                   <input type="file" ng-model="main.FacebookContent.fb_picture" id="{{$index}}" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="Imgpreview(this,'facepackImg')">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-show="main.FacebookContent.imgLink.length > 25 || main.FacebookContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img ng-src="{{main.FacebookContent.imgLink}}" id="facepackImg{{$index}}"  ng-model="facepackImg"  width="100%" height="100%"/>
+                                                        </div>
+                                                        <a ng-click="removefacepackImg($index);main.FacebookContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                   </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12 text-center">                                                     
+                                                            <p class="">{{main.FacebookContent.fb_action_text}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-6" ng-show="main.FbImageContent!= null">
+                                                                  <legend>Facebook Image</legend>
+
+                                                                  <div>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="packList1 == 'pack'">
+                                                              <input type="radio" ng-init="FbImageContent[$index].Declined=main.FbImageContent.Declined" ng-model="FbImageContent[$index].Declined" ng-value="false" > Approve 
+                                                                <input type="radio" ng-init="FbImageContent[$index].Declined=main.FbImageContent.Declined"  ng-model="FbImageContent[$index].Declined" ng-value="true" >  Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="packList1 == 'pack' && FbImageContent[$index].Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="FbImageContent[$index].DeclineReason=main.FbImageContent.DeclineReason" ng-model="FbImageContent[$index].DeclineReason">
+                                                       </div>
+                                                                </div>
+                                                      </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="desc">Description</label>
+                                                                        <textarea class="form-control" id="desc" rows="3" ng-model="main.FbImageContent.Description" maxlength="300" ng-trim="false"></textarea>
+                                                                        <span>{{300 - main.FbImageContent.Description.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" ng-model="main.FbImageContent.fb_picture" id="{{$index}}" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="Imgpreview(this,'fbipackImg1')">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                  <div class="row" ng-show="main.FbImageContent.imgLink.length > 25 || main.FbImageContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{main.FbImageContent.imgLink}}" id="fbipackImg1{{$index}}"  ng-model="fbipackImg1"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removefbipackImg($index);main.FbImageContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6" ng-show="main.TwitterContent!= null">
+                                                             <legend>Twitter Content</legend>
+
+                                                             <div>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="packList1 == 'pack'">
+                                                              <input type="radio" ng-init="TwitterContent[$index].Declined=main.TwitterContent.Declined" ng-model="TwitterContent[$index].Declined" ng-value="false"> Approve
+                                                               <input type="radio"  ng-init="TwitterContent[$index].Declined=main.TwitterContent.Declined"  ng-model="TwitterContent[$index].Declined" ng-value="true"> Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="packList1 == 'pack' && TwitterContent[$index].Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="TwitterContent[$index].DeclineReason=main.TwitterContent.DeclineReason" ng-model="TwitterContent[$index].DeclineReason">
+                                                       </div>
+                                                                </div>
+                                                      </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="twmicro">Microblog</label>
+                                                                        <textarea class="form-control" id="twmicro" rows="3" ng-model="main.TwitterContent.Microblog" maxlength="140" ng-trim="false"></textarea>
+                                                                        <span>{{140 - main.TwitterContent.Microblog.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" name="fbImg" maxsize="750px" id="{{$index}}" ng-model="main.TwitterContent.fb_picture" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="Imgpreview(this,'twitpackImg1')">
+                                                                         <span class=required ng-show="sevenpackForm.fbImg.$error.maxsize">Files must not exceed 5000 KB</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    <div class="row" ng-show="main.TwitterContent.imgLink.length > 25 || main.TwitterContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{main.TwitterContent.imgLink}}" id="twitpackImg1{{$index}}"  ng-model="twitpackImg1"  width="100%" height="100%"/>
+                                                        </div>
+                                                        <a  ng-click="removetwitpackImg($index);main.TwitterContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                     </div>
+
+                                                                                 <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control" id="lurl" ng-model="main.TwitterContent.longUrl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control" id="surl" ng-model="main.TwitterContent.shortedUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="updateResetURL($index)">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="updateShortURL(main.TwitterContent.longUrl,$index)">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                                        </div>
+                                                    </div>
+                            
+                                      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <hr>
+
+
+                                  <div class="row" ng-if="showDeclineReason">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Decline Reason</label>
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="declineReason" ></textarea>
+                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                  <div class="form-group text-right">
+                                                      <button type="button" class="btn btn-default" ng-click="fnDeclineReason();">Decline</button>
+                                                      
+                                                  </div>
+                                              </div>
+                                              <div class="col-sm-6 col-md-6">
+                                                  <div class="form-group text-left">
+                                                      <button type="button" class="pri-cus-buttons " ng-click="fnApproveAndScheduleContent();" >Approve & Schedule Content</button>
+                                                  </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="cancelUser();">Cancel</button>                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="fnshowOnlySevenDayPackage();" >Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                               </div>
+                            </form>
+                        </div>
+                    </div>
+                </div><!--end of update form-->
+          
+                
+                
+                
+                
+                
+                
+                
+
+                       <div class="row form-view" ng-show="taskForm">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="manage-content" class="">
+                               <fieldset>
+                               <legend>Writing Task Details</legend>
+                               <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <input type="text" class="form-control" id="title" ng-model="title" ng-disabled="disableText">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="ddate">Due Date</label>
+                                            <datepicker date-format="medium" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                                <input class="form-control" id="ddate" ng-model="ddate" ng-change="checkErr(startDate,endDate)" ng-disabled="disableText">
+                                                
+                                            </datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="amount">Amount</label>
+                                            <input type="text" class="form-control" id="amount" ng-model="amount" ng-disabled="disableText">
+                                        </div>
+                                    </div>
+
+                                    
+                                     <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client</label>
+                                        <select class=form-control ng-model="client" name="Client"  required ng-disabled="client">
+                                                    <option value="{{client}}" ng-selected="{{client}}" >{{client}}</option>
+                                               </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="editor">Editor</label>
+                                                  <select class=form-control ng-model="editor" name="Editor"  required ng-disabled="editor">
+                                    <option value="{{editor}}" ng-selected="{{editor}}" >{{editor}}</option>
+                                    </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="writer">Writer</label>
+                                               <select class=form-control ng-model="writer" name="Writer"  required ng-disabled="writer">
+                                                    <option value="{{writer}}" ng-selected="{{writer}}" >{{writer}}</option>
+                                               </select>
+
+                                    
+                                        </div>
+                                    </div>
+                                </div>
+
+                                      <div class="row" ng-show="disableText ">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="title">Created By</label>
+                                            <input type="text" class="form-control" id="title" ng-model="createdByValue" ng-disabled="disableText">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="ddate">Saved On</label>
+                                            <datepicker date-format="medium" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                                <input class="form-control" id="ddate" ng-model="savedateValue" ng-change="checkErr(startDate,endDate)" ng-disabled="disableText">
+                                                
+                                            </datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <div class="row" ng-show="Platform == 'Facebook' || Platform == 'Twitter' || Platform == 'Blog'">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="category">Category</label>
+                                                  <select class=form-control ng-model="category" name="category"  required ng-disabled="category">
+                                    <option value="{{category}}" ng-selected="{{category}}" >{{category}}</option>
+                                    </select>
+                                        </div>
+                                    </div>
+
+
+                                             <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="Platform">Platform</label>
+                                                  <select class=form-control ng-model="Platform" name="Platform"  required ng-disabled="Platform">
+                                   <option value="{{Platform}}" ng-selected="{{Platform}}" >{{Platform}}</option>
+                                    </select>
+                                        </div>
+                                    </div>
+                                 
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Brief</label>
+                                            <textarea class="form-control" id="brife" rows="3" ng-model="brife" ng-disabled="disableText"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Notes</label>
+                                            <textarea class="form-control" id="Notes" rows="3" ng-model="Notes" ng-disabled="disableText"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Logs</label>
+                                            <textarea class="form-control" id="Logs" rows="3" ng-model="Logs" ng-disabled="disableText"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Decline reason</label>
+                                            <textarea class="form-control" id="declineReason" rows="3" ng-model="declineReason" ng-disabled="disableText"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                  <div class="row" ng-show="!disableText  ">
+                                    <div class="col-sm-12 col-md-12 clearfix">
+                                          <button type="button" class="pri-cus-buttons pull-right" ng-click="declineWriter();" ng-show="!showSaveButton ">Decline & send back to writer</button>
+                                    </div>
+                                </div>
+                                
+                                
+                                   
+                                  <div ng-show="dispalyFBContent">
+                                <legend>Facebook Content</legend>
+                              
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbmicro">Microblog</label>
+                                            <textarea class="form-control" id="fbmicro" rows="3"  name="fbmicro" ng-model="fbmicro" maxlength="300" ng-trim="false"> </textarea>
+                                            <span>{{300 - fbmicro.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitle">Title</label>
+                                            <input type="text" class="form-control" id="fbtitle"  name="fbtitle" ng-model="fbtitle" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitlelink">Title Link</label>
+                                            <input type="text" class="form-control" id="fbtitlelink"  name="fbtitlelink" ng-model="fbtitlelink" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbdes">Description</label>
+                                            <textarea class="form-control" id="fbdes" rows="3"  name="fbdes" ng-model="fbdes" maxlength="300" ng-trim="false"></textarea>
+                                            <span>{{300 - fbdes.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                        <input type="file" ng-model="FBmyfile" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('taskfb').src = window.URL.createObjectURL(this.files[0])">  
+                                        </div>
+                                    </div>
+                                </div>
+                                       <div class="row" ng-show="TaskimgLink.length > 25 || FBmyfile">
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="dz-default">  
+                                             <img  src="{{TaskimgLink}}" id="taskfb"  ng-model="blahfbk"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removetaskfb();FBmyfile=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                </div>
+                                
+
+                              <div ng-show="dispalyTWContent">
+                                <legend>Twitter Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="twmicro">Microblog</label>
+                                            <textarea class="form-control" id="twmicro" rows="3"  name="auditTwtMblog" ng-model="twmicro" maxlength="140" ng-trim="false"></textarea>
+                                            <span>{{140 - twmicro.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                               <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label><div>
+                              <input type="file" ng-model="twmyfile" name="twitImage" maxsize="750px" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('tasktwit').src = window.URL.createObjectURL(this.files[0])">
+                                             <span class=required ng-show="writingTaskForm.twitImage.$error.maxsize">Files must not exceed 5000 KB</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                   <div class="row" ng-show="TaskimgLink.length > 25 || twmyfile">
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="dz-default">  
+                                             <img  src="{{TaskimgLink}}" id="tasktwit"  ng-model="blahtwit"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removetasktwit();twmyfile=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                 <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control"  name="auditLongUrl" ng-model="auditLongUrl" id="twlurl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control"  name="auditShortUrl" ng-model="auditShortUrl" id="twsurl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button"  class="btn btn-default ">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button"  class="pri-cus-buttons ">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                
+
+                                 <div ng-show="dispalyBlogContent">
+                                <legend>Blog Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="btitle">Title</label>
+                                            <input type="text" class="form-control"  name="btitle" ng-model="btitle" id="btitle">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="blog-content">Content</label>
+                               
+                                            <div text-angular="text-angular" name="htmlcontent" ng-model="htmlcontent" ta-disabled='disabled'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="tags">Tags</label>
+                                            <input type="text" class="form-control"  name="tags" ng-model="tags" id="tags" maxlength="255" ng-trim="false">
+                                            <span>{{255 - tags.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Featured Image</label>
+                                            <div>
+                                  <input type="file" ng-model="wpmyfile" name="blogImage" maxsize="750px" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('taskblg').src = window.URL.createObjectURL(this.files[0])"> 
+                                                 <span class=required ng-show="writingTaskForm.blogImage.$error.maxsize">Files must not exceed 5000 KB</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                       <div class="row" ng-show="TaskimgLink.length > 25 || wpmyfile">
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="dz-default">  
+                                             <img  src="{{TaskimgLink}}" id="taskblg"  ng-model="blahblg"  width="100%" height="100%"/>
+                                        </div>
+                                        <a ng-click="removetaskblg();wpmyfile=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div></div>
+                                
+                                      <div class="row" ng-show="chekdone">
+                                        <div class="">
+                                            <div class="checkbox">
+                                          <label class="">
+                                            <input type="checkbox" ng-model="checkValue" ng-true-value="'1'" ng-false-value="'0'">
+                                            Content is ready, send to editor
+                                          </label>
+                                        </div>
+                         
+                               
+                                    </div>
+                                   </div>
+                                 <div class="row" ng-show="showSaveButton">
+                                     <div class="col-sm-12 col-md-12 text-center">
+                                     <button type="button" class="btn btn-default" ng-click="cancelUser();">Cancel</button>
+                                      <button type="button" class="pri-cus-buttons " ng-click="editUserSubmit();" >Save</button>
+                                    </div>
+                                </div>
+                                  <div class="row text-center"> <strong style="color:#b81022;">{{warning}}</strong></div>
+                              
+                                  <form class="styles"  >
+                                <div class="panel-group" id="accordion" ng-show="UpdateshowOnlySingleDayPackage">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#Single">Day 1 - {{dataTitile}}  <i class="fa fa-chevron-down pull-right"></i></h3>
+                                    </div>
+                                    <div id="Single" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-4" ng-repeat="fbontent in FacebookContent">
+                                                      <legend>Facebook Content</legend>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbmicro">Microblog</label>
+                                                                <textarea class="form-control" id="fbmicro" rows="3" ng-model="fbontent.Microblog" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - fbontent.Microblog.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitle">Title</label>
+                                                                <input type="text" class="form-control" id="fbtitle" ng-model="fbontent.Title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitlelink">Title Link</label>
+                                                                <input type="text" class="form-control" id="fbtitlelink" ng-model="fbontent.Titlelink">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbdes">Description</label>
+                                                                <textarea class="form-control" id="fbdes" rows="3" ng-model="fbontent.Description" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - fbontent.Description.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="addpic">Add Picture</label>
+                                                                <div >
+
+                                                                       <input type="file" ng-model="fbontent.fb_picture" accept="image/gif, image/jpeg, image/png"
+                                                                    
+                                                                    base-sixty-four-input >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8" >
+                                                    <div class="row">
+                                                        <div class="col-sm-6" ng-repeat="fbImgontent in FbImageContent">
+                                                            <legend>Facebook Image</legend>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="desc">Description</label>
+                                                                        <textarea class="form-control" id="desc" rows="3" ng-model="fbImgontent.Description" maxlength="300" ng-trim="false"></textarea>
+                                                                        <span>{{300 - fbImgontent.Description.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" ng-model="fbImgontent.fb_picture" accept="image/gif, image/jpeg, image/png"
+                                                                       
+                                                                 base-sixty-four-input   >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6" ng-repeat="twContent in TwitterContent">
+                                                            <legend>Twitter Content</legend>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="twmicro">Microblog</label>
+                                                                        <textarea class="form-control" id="twmicro" rows="3" ng-model="twContent.Microblog" maxlength="140" ng-trim="false"></textarea>
+                                                                        <span>{{140 - twContent.Microblog.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                           <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="lurl">Long Url</label>
+                                                                           <input type="text" class="form-control" id="lurl" ng-model="twContent.URL" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                       
+                                                        </div>
+                                                    </div>
+                                                             <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control" id="lurl" ng-model="longUrl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control" id="surl" ng-model="shortedUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="resetURL()">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="shortURL(longUrl)">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div> 
+                                      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <hr>
+                                
+                               </div>
+
+                            </form>
+
+                             <form class="styles" >
+                                <div class="panel-group" id="accordion"  ng-show="UpdateshowOnlySevenDayPackage">
+
+                                <div class="panel panel-default" ng-repeat="main in MainDiv1">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}">Day {{$index + 1}}  {{main.FacebookContent.Title}} <i class="fa fa-chevron-down pull-right"></i></h3>
+                                    </div>
+                                    <div id="collapseTwo{{$index + 1}}" class="panel-collapse collapse ">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-4" ng-show="main.FacebookContent!= null">
+                                                    <legend>Facebook Content</legend>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbmicro">Microblog</label>
+                                                                <textarea class="form-control" id="fbmicro" rows="3" ng-model="main.FacebookContent.Microblog" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - main.FacebookContent.Microblog.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitle">Title</label>
+                                                                <input type="text" class="form-control" id="fbtitle" ng-model="main.FacebookContent.Title" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitlelink">Title Link</label>
+                                                                <input type="text" class="form-control" id="fbtitlelink" ng-model="main.FacebookContent.Titlelink">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbdes">Description</label>
+                                                                <textarea class="form-control" id="fbdes" rows="3" ng-model="main.FacebookContent.Description" maxlength="300" ng-trim="false"></textarea>
+                                                                <span>{{300 - main.FacebookContent.Description.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="addpic">Add Picture</label>
+                                                                <div >
+                                                                   <input type="file" ng-model="main.FacebookContent.fb_picture" id="{{$index}}" base-sixty-four-input accept="image/gif, image/jpeg, image/png">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12 text-center">
+                                                            <p class="">{{main.FacebookContent.fb_action_text}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-6" ng-show="main.FbImageContent!= null">
+                                                                  <legend>Facebook Image</legend>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="desc">Description</label>
+                                                                        <textarea class="form-control" id="desc" rows="3" ng-model="main.FbImageContent.Description" maxlength="140" ng-trim="false"></textarea>
+                                                                        <span>{{140 - main.TwitterContent.Microblog.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" ng-model="main.FbImageContent.fb_picture" id="{{$index}}" base-sixty-four-input accept="image/gif, image/jpeg, image/png"
+                                                                  
+                                                                      >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6" ng-show="main.TwitterContent!= null">
+                                                             <legend>Twitter Content</legend>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="twmicro">Microblog</label>
+                                                                        <textarea class="form-control" id="twmicro" rows="3" ng-model="main.TwitterContent.Microblog" maxlength="140" ng-trim="false"></textarea>
+                                                                        <span>{{140 - main.TwitterContent.Microblog.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                           <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="lurl">Long Url</label>
+                                                                           <input type="text" class="form-control" id="lurl" ng-model="main.TwitterContent.URL" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <legend>URL Shortener</legend>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="lurl">Long Url</label>
+                                                                <input type="text" class="form-control" id="lurl">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="surl">Short Url</label>
+                                                                <input type="text" class="form-control" id="surl">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                                            <div class="form-group text-right">
+                                                                <button type="button" class="btn btn-default ">Reset</button>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group text-left">
+                                                                <button type="button" class="pri-cus-buttons ">Shorten URL</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            
+                                <hr>
+                               </div>
+                            </form>
+                    <!--end of update form-->
+                              
+                                
+                        
+                             
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div><!--end of edit form-->    
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+
+function Imgpreview (argument,name) {
+    document.getElementById(name+argument.id).src= window.URL.createObjectURL(argument.files[0]);
+}
+
+
+
+$(document).ready(function(){
+
+ $('#Fullscreen').css('height', $(document).outerWidth() + 'px');
+    //for when you click on an image
+    $('.myImg').click(function () {
+        var src = $(this).attr('src'); //get the source attribute of the clicked image
+        console.log(src)
+        if(src=="data:image/png;base64, ")
+        {
+           
+          return;
+        }
+
+         
+        $('#Fullscreen img').attr('src', src); //assign it to the tag for your fullscreen div
+
+
+
+        $('#Fullscreen').fadeIn();
+    });
+    $('#Fullscreen').click(function () {
+        $(this).fadeOut(); //this will hide the fullscreen div if you click away from the image. 
+    });
+        });
+</script>

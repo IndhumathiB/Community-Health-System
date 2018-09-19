@@ -1,0 +1,79 @@
+<div ng-controller="sideMenuCtrl" id="side-nav" ng-if="mobileView" class="collapsed">
+      <div class="brand-logo">
+          <img src="images/logo.svg" alt=""><h3>
+          BeSociably</h3>
+          <a class="hidden-md hidden-lg" ng-click="fnClickBar();"><i class="fa fa-bars" id="test"></i></a>
+      </div>
+        <nav class="menu">
+            <ul class="nav reset" data-accordion>
+                <li class="parent" ng-repeat="menu in menu1"  >
+                    <a href="#/{{menu.menu_name}}" class="" ng-show="!menu.sub_menus"  data-ng-class="{active: active}"  data-ng-click="active=!active;fnClickBar();">
+                              <i class="fa fa-tachometer" ng-if="menu.menu_name=='Dashboard'"></i>
+                                <i class="fa fa-users" ng-if="menu.menu_name=='UserManagement'"></i>
+                              <span class="menu-title">{{fnShowSpace(menu.menu_name)}}</span>
+                    </a>
+
+                    <a class="" ng-show="menu.sub_menus" ng-model="collapsed11" ng-click="collapsed11 = !collapsed11;">
+                                <i class="fa fa-folder" ng-if="menu.menu_name=='ContentManagement'"></i>
+                                <i class="fa fa-user-secret" ng-if="menu.menu_name=='ClientManagement'"></i>
+                                <i class="fa fa-pencil" ng-if="menu.menu_name=='WritingManagement'"></i>
+                                <i class="fa fa-columns" ng-if="menu.menu_name=='SiteManagement'"></i>
+                                <span class="menu-title">{{fnShowSpace(menu.menu_name)}}</span>
+                              <i class="fa fa-angle-down pull-right" ></i>
+                    </a>
+
+                    <ul id="" class="sub-navs">
+                        <li  ng-repeat="sub in menu.sub_menus"  ng-show="collapsed11">
+                              <a href="#/{{menu.menu_name}}/{{sub.submenu_name}}" ng-class="{ active: isActive('/{{menu.menu_name}}/{{sub.submenu_name}}')}">{{fnShowSpace(sub.submenu_name)}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div><!-- #side-nav End -->
+
+    <div ng-controller="sideMenuCtrl" id="side-nav" ng-if="desktopView" >
+      <div class="brand-logo">
+          <img src="images/logo.svg" alt=""><h3>
+          BeSociably</h3>
+          <a class="hidden-md hidden-lg" ng-click="fnClickBar();"><i class="fa fa-bars" id="test"></i></a>
+      </div>
+        <nav class="menu">
+            <ul class="nav reset" data-accordion>
+                <li class="parent" ng-repeat="menu in menu1"  >
+                    <a href="#/{{menu.menu_name}}" class="" ng-show="!menu.sub_menus"  data-ng-class="{active: active}"  data-ng-click="active=!active;">
+                              <i class="fa fa-tachometer" ng-if="menu.menu_name=='Dashboard'" ></i>
+                                <i class="fa fa-users" ng-if="menu.menu_name=='UserManagement'"></i>
+
+                              <span class="menu-title">{{fnShowSpace(menu.menu_name)}}</span>
+                    </a>
+
+                    <a class="" ng-show="menu.sub_menus" ng-model="collapsed1" ng-click="collapsed1 = !collapsed1;">
+                                <i class="fa fa-folder" ng-if="menu.menu_name=='ContentManagement'"></i>
+                                <i class="fa fa-user-secret" ng-if="menu.menu_name=='ClientManagement'"></i>
+                                <i class="fa fa-pencil" ng-if="menu.menu_name=='WritingManagement'"></i>
+                                <i class="fa fa-columns" ng-if="menu.menu_name=='SiteManagement'"></i>
+                                 <i class="fa fa-question-circle" ng-if="menu.menu_name=='Help'"></i>
+                                <span class="menu-title">{{fnShowSpace(menu.menu_name)}}</span>
+                              <i class="fa fa-angle-down pull-right" ></i>
+                    </a>
+
+                    <ul id="" class="sub-navs">
+                        <li  ng-repeat="sub in menu.sub_menus"  ng-show="collapsed1">
+                              <a href="#/{{menu.menu_name}}/{{sub.submenu_name}}" ng-class="{ active: isActive('/{{menu.menu_name}}/{{sub.submenu_name}}')}">{{fnShowSpace(sub.submenu_name)}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div><!-- #side-nav End -->
+
+
+
+
+<style type="text/css">
+  #side-nav .nav>li.current a.active {
+    color: #3386bc;
+    cursor: default;
+}
+</style>

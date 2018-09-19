@@ -1,0 +1,203 @@
+
+   
+<div class="main">
+
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                    <li class="">My Account</li>
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                
+                            </div>
+                            <!-- /.navbar-collapse -->
+                           <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+                
+                 
+                <div class="row">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="myAccountForm" class="styles" novalidate>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="fname">First Name <span class="required">*</span></label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountFname.$invalid]">
+                                            <input type="text" class="form-control" id="accountFname" ng-model="accountFname" name="accountFname" required>
+                                            <span class=required ng-show="submitted && myAccountForm.accountFname.$error.required">First Name is required</span>
+                                            <span class=required ng-show="myAccountForm.accountFname.$error.pattern">First Name is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lname">Last Name</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountLname.$invalid]">
+                                            <input type="text" class="form-control" id="accountLname"  ng-model="accountLname" name="accountLname">
+                                            <span class=required ng-show="submitted && myAccountForm.accountLname.$error.required">Last Name is required</span>
+                                            <span class=required ng-show="myAccountForm.accountLname.$error.pattern">Last Name is Invalid</span>
+                                            <span class=required ng-show="accountFname.length>0 && accountLname==accountFname">Lastname should not be match with Firstname</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="username">User Name <span class="required">*</span></label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountUsername.$invalid]">
+                                                  <input type="text" class="form-control" id="accountUsername"  ng-model="accountUsername1" ng-disabled="accountUsername1" name="accountUsername" required>
+                                            <span class=required ng-show="submitted && myAccountForm.accountUsername.$error.required">User Name is required</span>
+                                            <span class=required ng-show="myAccountForm.accountUsername.$error.pattern">Username is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountStatus.$invalid]" >
+                                            <select class="form-control" id="accountStatus"  ng-model="accountStatus"  ng-disabled="noAccess" name="accountStatus" required>
+                                                <option value=" ">Select</option>
+                                                 <option value="0" ng-selected="accountStatus=='0'">Active</option>
+                                                <option value="1" ng-selected="accountStatus=='1'">Deactivate</option>
+                                            </select>
+                                             <span class=required ng-show="submitted && myAccountForm.accountStatus.$error.required">Status is required</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountPassword.$invalid]">
+                                            <input type="password" class="form-control" id="accountPassword"  ng-model="accountPassword" ng-pattern="/(?=.*[!@#$%&*()_+~])(?=.*[0-9])(?=.*[a-z]).{6,15}$/" name="accountPassword">
+                                            <span class=required ng-show="submitted && myAccountForm.accountPassword.$error.required">Password is required</span>
+                                             <span class=required ng-show="myAccountForm.accountPassword.$error.pattern">Password must have 6 to 15 letters which includes one numeric,special characters</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="cpassword">Confirm Password</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountCpassword.$invalid]">
+                                            <input type="password" class="form-control" id="accountCpassword"  ng-model="accountCpassword" name="accountCpassword"  ng-pattern="accountPassword">
+                                            <span class=required ng-show="submitted && myAccountForm.accountCpassword.$error.required">Confirm Password is required</span>
+                                             <span class=required ng-show="myAccountForm.accountCpassword.$error.pattern">Confirm Password should match Password</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="add">Address</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountAddress.$invalid]">
+                                            <input type="text" class="form-control" id="accountAddress"  ng-model="accountAddress" name="accountAddress">
+                                            <span class=required ng-show="submitted && myAccountForm.accountAddress.$error.required">Address is required</span>
+                                            <span class=required ng-show="myAccountForm.accountAddress.$error.pattern">Address is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="city">City</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountCity.$invalid]">
+                                            <input type="text" class="form-control" id="accountCity"  ng-model="accountCity" name="accountCity">
+                                             <span class=required ng-show="submitted && myAccountForm.accountCity.$error.required">City is required</span>
+                                             <span class=required ng-show="myAccountForm.accountCity.$error.pattern">City is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="state">State</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountState.$invalid]">
+                                            <input type="text" class="form-control" id="accountState"  ng-model="accountState" name="accountState">
+                                             <span class=required ng-show="submitted && myAccountForm.accountState.$error.required">Password is required</span>
+                                            <span class=required ng-show="myAccountForm.accountState.$error.pattern">Username is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="zip">Zip</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountZip.$invalid]">
+                                            <input type="text" class="form-control" id="accountZip"  ng-model="accountZip" name="accountZip" >
+                                            <span class=required ng-show="submitted && myAccountForm.accountZip.$error.required">Zip is required</span>
+                                            <span class=required ng-show="myAccountForm.accountZip.$error.pattern">Zip is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountPhone.$invalid]">
+                                            <input type="tel" class="form-control" id="accountPhone"  ng-model="accountPhone" name="accountPhone" ng-pattern="/^[+0-9]{0,13}$/">
+                                            <span class=required ng-show="submitted && myAccountForm.accountPhone.$error.required">Phone is required</span>
+                                            <span class=required ng-show="myAccountForm.accountPhone.$error.pattern">Phone Number is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="email">Email <span class="required">*</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && myAccountForm.accountEmail.$invalid]">
+                                            <input type="email" class="form-control" id="accountEmail"  ng-model="accountEmail" ng-pattern="/^[_a-z0-9.]+([_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/" name="accountEmail" required>
+                                             <span class=required ng-show="submitted && myAccountForm.accountEmail.$error.required">Email is required</span>
+                                                <span class=required ng-show="myAccountForm.accountEmail.$error.pattern">Email is Invalid</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix">
+                                   
+                                        <button type="button" class="pri-cus-buttons pull-right" ng-click="UpdateUserAccount()">Update</button>
+                                             <button type="button" class="btn btn-default pull-right" ng-click="cancelUser();">Cancel</button>
+                                    </div>
+                                </div>
+                                
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

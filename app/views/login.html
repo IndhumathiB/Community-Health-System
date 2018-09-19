@@ -1,0 +1,63 @@
+<!-- Add your site or application content here -->
+    <div class="app-signin">
+        <div class="container">
+            <div class="signin-container row">
+                <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 top-bottom-moderate-box-shadows">
+                    <div class="brand text-center">
+                        <img src="images/logo.svg" width="" height="100px">
+                    </div>
+                    <p class="h4 text-center">Welcome, Login to BeSociably</p>
+                    <div class="login-form">
+                        <form name="loginForm" novalidate>
+                            <div class="form-group">
+                                <label for="">User Name</label>
+                                <div class="control-group" ng-class=" {true: 'error'}[submitted && loginForm.username.$invalid]">
+                                <input type="text" class="form-control" ng-model="username" placeholder="Enter your email" name="username">
+                                <span style="color:red" ng-show="submitted && loginForm.username.$error.required">User Name is required.</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Password</label>
+                                <div class="control-group" ng-class=" {true: 'error'}[submitted && loginForm.password.$invalid]">
+                                <input type="password" class="form-control" ng-model="password" placeholder="Enter Password" name="password">
+                                <span style="color:red" ng-show="submitted && loginForm.password.$error.required">Password is required.</span>
+                                </div>
+                            </div>
+                            <button class="pri-cus-buttons" ng-click="signIn()">Sign In</button>
+                            <div class="row f-sm">
+                                <div class="col-xs-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"> Remember me
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="checkbox text-right">
+                                        <a href="#/forgotPassword"> Forgot Password ? </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>       
+        </div>
+        <div class="sign-footer">
+            <footer class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>&copy; 2009-2016 Sociably, LLC All Rights Reserved</p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <nav>
+                            <ul class="reset">
+                                <li class="display-ib"><a href="">Privacy &amp; Terms </a></li>
+                                <li class="display-ib"><a href="">Help</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>

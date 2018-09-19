@@ -1,0 +1,570 @@
+   
+<div class="main" ng-controller="failedContentsCtrl as ctrl" ng-show="ShowAdminForm">
+
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-9 col-sm-10 col-md-9 col-lg-10" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                 <!--    <li class="">Failed Contents</li> -->
+
+                                      <li class="" ng-show="!editForm">Failed Content</li>
+
+                                             <li class="link" ng-click="cancelUser();" ng-show="editForm"><a>Failed Content</a></li>
+                                                  <li class="" ng-show="editForm">Details</li>
+
+                                                  
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                
+                            </div>
+                            <!-- /.navbar-collapse -->
+                             <div class="col-xs-3 col-sm-2 col-md-3 col-lg-2" id="test" ng-include="'views/headerDropDown.html'">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+                <div class="row">
+                    <span class="mar-15-7" style="float: right;" ng-show="!AddUserForm"> <input type="checkbox" id="showItems1" ng-click="MarkAsRead()" >  &nbsp;Mark As Read</span>
+                </div>
+               <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Failed Content</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       <!--<button class="pri-cus-buttons"><i class="fa fa-plus"></i> Create New User</button>-->
+                   </div>
+               </div>
+                
+                <div class="row" ng-show="!AddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="table-responsive cus-cards">
+                          <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                      <th ng-click="failedContentSort(asc=!asc,'title');">Content Name <i class="fa fa-sort"></i></th>
+                                      <th ng-click="failedContentSort(asc=!asc,'platform');">Platform <i class="fa fa-sort"></i></th>
+                                      <th ng-click="failedContentSort(asc=!asc,'hospitalName');">Client <i class="fa fa-sort"></i></th>
+                                      <th>Scheduled On</th>
+                                      <th>Saved On</th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr class="font-color declined" ng-repeat="failedDatas in failedContentDatas  | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage" ng-if="failedDatas.isReadFailed==1">
+                                      <td>{{failedDatas.contentName}}</td>
+                                      <td>{{failedDatas.platform}}</td>
+                                      <td>{{failedDatas.clientName}}</td>
+                                      <td>{{failedDatas.scheduledOn}}</td>
+                                      <td>{{failedDatas.savedOn}}</td>
+                                      <td>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit" ng-click="GetFailedContentById(failedDatas)"></i>
+                                      </td>
+                                  </tr>
+                                  <tr ng-repeat="failedDatas in failedContentDatas  | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage" ng-if="failedDatas.isReadFailed==0">
+                                      <td>{{failedDatas.contentName}}</td>
+                                      <td>{{failedDatas.platform}}</td>
+                                      <td>{{failedDatas.clientName}}</td>
+                                      <td>{{failedDatas.scheduledOn}}</td>
+                                      <td>{{failedDatas.savedOn}}</td>
+                                      <td>
+                                          <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit" ng-click="GetFailedContentById(failedDatas)"></i>
+                                      </td>
+                                  </tr>
+                                  
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div> <!--end of content -->
+                <div class="row" ng-show="!AddUserForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="pagination-div pull-right" ng-show="failedContentDatas.length > 0">
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left" ></i> Previous</button></li>
+                                     
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row form-view"  ng-show="AddUserForm">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="manageContentForm" class="styles" novalidate>
+                               <fieldset>
+                               <legend>Content Details</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="title">Title<span class=required> *</span></label>
+                                     <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageTitle.$invalid]">
+                                            <input type="text" class="form-control" id="manageTitle" name="manageTitle" ng-model="manageTitle" required>
+                                                <span class=required ng-show="submitted && manageContentForm.manageTitle.$error.required">Give Title</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                            <label for="category">Category<span class=required> *</span></label>
+                           <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageCategoryType.$invalid]">
+                            <select class=form-control ng-model="manageCategoryType" name="manageCategoryType" ng-options="category.id as category.CategoryN for category in CategoryList" required >
+                                              <option value="" selected style=''>-- Select Category Type --</option>
+                                                </select>
+                                                <span class=required ng-show="submitted && manageContentForm.manageCategoryType.$error.required">Select Category Type</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="platform">Platform<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.optradio.$invalid]">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="radio-inline mar-0-10" ng-repeat="prt in Platformnames">
+                                                            <input type=radio name="optradio" ng-model="radioValues.manage" required value="{{prt.id}}">{{prt.PName}}
+                                                        </label>
+                                                        <span class=required ng-show="submitted && manageContentForm.optradio.$error.required">Choose Platform </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageClient.$invalid]">
+                                                <select class=form-control id="manageClient" ng-model="manageClient" name="manageClient" ng-options="selectClient.id as selectClient.ClientName for selectClient in Client" required multiple>
+                                                    <option value="" selected>-- Select Client --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="exdate">Expire Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageExpryDate.$invalid]">
+                                                <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                                    <input class="form-control" id="manageExpryDate" ng-model="manageExpryDate" name="manageExpryDate" required>
+                                                </datepicker>
+                                                <span class=required ng-show="submitted && manageContentForm.manageExpryDate.$error.required">Select Expire Date</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Notes</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageNotes.$invalid]">
+                                                <textarea class="form-control" id="notes" rows="3" name="manageNotes" ng-model="manageNotes" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div data-facebook-content ng-show="radioValues.manage == 'fb'">
+                                <legend>Facebook Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbmicro">Microblog</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageFBMblog.$invalid]">
+                                                <textarea class="form-control" id="fbmicro" rows="3" ng-trim="false" maxlength="5000" name="manageFBMblog" ng-model="manageFBMblog" required> </textarea>
+                                                <span>{{5000 - manageFBMblog.length}} Characters Left</span>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitle">Title</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageFBTitle.$invalid]">
+                                                <input type="text" class="form-control" id="fbtitle" name="manageFBTitle" ng-model="manageFBTitle" required>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitlelink">Title Link</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.auditFBTlLink.$invalid]">
+                                                <input type="text" class="form-control" id="fbtitlelink"  name="manageFBTlLink" ng-model="auditFBTlLink" required>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbdes">Description</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageFBDescrip.$invalid]">
+                                                <textarea class="form-control" id="fbdes" rows="3" ng-trim="false" maxlength="5000" name="manageFBDescrip" ng-model="manageFBDescrip" required></textarea>
+                                                <span>{{5000 - manageFBDescrip.length}} Characters Left</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                       <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageFBPic.$invalid]">
+                                            <input type="file" ng-model="manageFBPic" accept="image/gif, image/jpeg, image/png" base-sixty-four-input name="manageFBPic" required onchange="document.getElementById('fbsingle').src = window.URL.createObjectURL(this.files[0])">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                      <legend>Image Preview</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4 mar-5-0" ng-show="imgLink.length > 25  || manageFBPic" >
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="fbsingle"  ng-model="blahtwt"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removefbsingle();manageFBPic=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                   </div>
+                               
+                                <div data-facebook-image  ng-show="radioValues.manage == 'fi'">        
+                                <legend>Facebook Image</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                          <label for="micro">Description</label>
+                                 <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageFBIdesc.$invalid]">
+                                              <textarea class="form-control" id="micro" rows="3" ng-trim="false" maxlength="5000"  name="manageFBIdesc" ng-model="manageFBIdesc" required></textarea>
+                                              <span>{{5000 - manageFBIdesc.length}} Characters Left</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                               <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageFBIpic.$invalid]">
+                                             <input type="file" ng-model="manageFBIpic" accept="image/gif, image/jpeg, image/png" base-sixty-four-input name="manageFBIpic" required onchange="document.getElementById('facebkImg').src = window.URL.createObjectURL(this.files[0])"> 
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                      <legend>Image Preview</legend>
+                                <div class="row" ng-show="imgLink.length > 25 || manageFBIpic">
+                                    <div class="col-sm-12 col-md-4 mar-5-0">
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="facebkImg"  ng-model="facebkImg"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removefacebkImg();manageFBIpic=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                        </div>
+                                
+                                 <div data-twitter-content  ng-show="radioValues.manage == 'tw'">
+                                <legend>Twitter Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="twmicro">Microblog</label>
+                                 <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageTwtMblog.$invalid]">                                                
+                                            <textarea class="form-control" id="twmicro" rows="3" ng-trim="false" maxlength="140" name="manageTwtMblog" ng-model="manageTwtMblog" ></textarea>
+                                                <span>{{140 - manageTwtMblog.length}} Characters Left</span>
+                                               
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageFBIpic.$invalid]">
+                                            <input type="file" ng-model="manageTwtpic" accept="image/gif, image/jpeg, image/png" base-sixty-four-input name="manageFBIpic" required accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('singletwt').src = window.URL.createObjectURL(this.files[0])">
+                                        <!--<span class=required ng-show="submitted && !manageFBIpic">Select Picture</span>-->
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                       <legend>Image Preview</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4 mar-5-0" ng-show="imgLink.length > 25 || manageTwtpic" >
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="singletwt"  ng-model="blahtwt"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removesingletwt();manageTwtpic=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                        </div>
+                                
+                               <div data-blog-content  ng-show="radioValues.manage == 'wp'">
+                                <legend>Blog Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="btitle">Title</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageBlogTitl.$invalid]">
+                                            <input type="text" class="form-control"  name="manageBlogTitl" ng-model="manageBlogTitl" id="btitle" required>
+                                        
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="micro">Content</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageBlogcontent.$invalid]">
+                                            <div text-angular="text-angular" class="textangular" name="manageBlogcontent" ng-model="manageBlogcontent" required></div>                                            
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="tags">Tags</label>
+                                   <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.auditBlogTag.$invalid]">
+                                            <input type="text" class="form-control"  name="manageBlogTag" ng-model="manageBlogTag" id="tags" ng-trim="false" maxlength="255">
+                                       <span>{{255 - manageBlogTag.length}} Characters Left</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Featured Image</label>
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageBlogImg.$invalid]">
+                                             <input type="file" ng-model="manageBlogImg" base-sixty-four-input name="manageBlogImg" required accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('singleblg').src = window.URL.createObjectURL(this.files[0])">
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                   <legend>Image Preview</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4 mar-5-0" ng-show="imgLink.length > 25 || manageBlogImg" >
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="singleblg"  ng-model="blahtwt"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removesingleblg();manageBlogImg=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                        </div>
+                                <div ng-show="radioValues.manage != 'wp'">
+                               <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control" id="lurl" ng-model="longUrl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control" id="surl" ng-model="shortedUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="resetURL()">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="shortURL(longUrl)">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                   </div>
+                                <legend ng-show="statusValue=='0' || statusValue=='18' || statusValue=='7'">Scheduling</legend>
+                                <div class="row" ng-show="statusValue=='0' || statusValue=='18' || statusValue=='7'">
+                                 <div class="col-sm-12 col-md-12" ng-hide="clientHide || scheduleButtons" >
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageClient.$invalid]">
+                                                <select class=form-control id="manageClient" ng-model="manageClientValue" name="manageClient" ng-options="selectClient.id as selectClient.ClientName for selectClient in Client" required>
+                                                    <option value="" selected>-- Select Client --</option>
+                                                </select>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="podate">Post Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.contentpostDate.$invalid]">
+                                           <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                             <input  class="form-control" id="contentpostDate" ng-model="contentpostDate" name="contentpostDate"  required>
+                                          </datepicker>
+                                          <span class=required ng-show="submitted && manageContentForm.contentpostDate.$error.required">Select Date</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="potime">Post Time<span class=required> *</span></label> 
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.time2.$invalid]">
+                                        <ng-timepicker id="timePicker"  class="dropdown"  ng-model="ctrl.time2" init-time="00:00" required></ng-timepicker>
+                                        <span class=required ng-show="submitted && !ctrl.time2">Select Time</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                     <div class="col-xs-6 col-sm-6 col-md-6"  ng-hide="scheduleButtons">
+                                                  <div class="form-group ">
+                                        <label class="radio-inline">
+                                        <input type="checkbox" name="optradio" ng-model="checkboxModel.value2"
+           ng-true-value="'YES'" ng-false-value="'NO'" ng-change="saveTemplate()" required="" value="wp"  style="">Save changes to template and schedule  
+                                                        </label>
+                                                      
+                                                  </div>
+                                              </div>
+                                     <div class="col-xs-6 col-sm-6 col-md-6" ng-hide="scheduleButtons">
+                                                  <div class="form-group text-right">
+                                        <button type="button" class="pri-cus-buttons " ng-click="scheduleButton();">Schedule</button>
+                                                      
+                                                  </div>
+                                              </div>
+
+                                               <div class="col-xs-6 col-sm-6 col-md-6" ng-show="scheduleButtons">
+                                                  <div class="form-group text-right">
+                                                      <button type="button" class="pri-cus-buttons mar-5" ng-click="fnReSchedule();">ReSchedule</button>
+                                                  </div>
+                                              </div>
+                                        <legend></legend>     
+                              </div>
+
+
+
+
+                                 <div class="row" ng-show="statusValue=='5'">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Decline Reason</label>
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="satus5declineReason" ></textarea>
+                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                                  <div class="form-group text-right">
+                                        <button type="button" class="btn btn-default" ng-click="fnStatus5Decline();">Decline</button>
+                                                      
+                                                  </div>
+                                              </div>
+                                              <div class="col-sm-6 col-md-6">
+                                                  <div class="form-group text-left">
+                                                      <button type="button" class="pri-cus-buttons " ng-click="fnStatus5Approve();" >Approve Content</button>
+                                                  </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                     <legend></legend>
+                                </div>
+
+
+
+
+
+<!--
+                                <legend ng-show="onlyforAdd">Scheduling</legend>
+                                <div class="row" ng-show="onlyforAdd">
+                                
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="podate">Post Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.contentpostDate.$invalid]">
+                                           <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                             <input  class="form-control" id="contentpostDate" ng-model="contentpostDate" name="contentpostDate"  required>
+                                            <span class=required>{{errMessage1}}</span>
+                                          </datepicker>
+                                          <span class=required ng-show="submitted && manageContentForm.contentpostDate.$error.required">Select Date</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="potime">Post Time<span class=required> *</span></label> 
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.time2.$invalid]">
+                                        <ng-timepicker id="timePicker"  class="dropdown" data-ng-class="{open: open}" data-ng-click="open=!open"  ng-model="ctrl.time2" init-time="00:00" required></ng-timepicker>
+                                        <span class=required ng-show="submitted && !ctrl.time2">Select Time</span>
+                                          </div>
+                                        </div>
+                                    </div>
+
+
+                                    </div>-->
+
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix text-center">
+                                        <button type="button" class="btn btn-default mar-5" ng-click="cancelUser();">Cancel</button>
+                                      <button type="button" ng-hide="approveScheduleButton" class="sec-cus-buttons mar-5" ng-click="ScheduleAndApproval()">Approve &amp; Schedule</button>
+                                        <button type="button" ng-hide="clientApprovalButton" class="sec-cus-buttons mar-5" ng-click="SendClientApproval()">Send to Client for Approval</button> 
+                                        <button type="button" class="pri-cus-buttons mar-5" ng-click="AddManageContent()" ng-show="showSaveButton">Save as Template</button>
+                                        <button type="button" class="pri-cus-buttons mar-5" ng-click="AddManageContent();" ng-show="!showSaveButton">Save</button>
+                                        <button type="button" class="pri-cus-buttons mar-5" ng-click="reSendtoClientApproval();" ng-show="statusValue=='7'">Re-Send to Client for Approval</button>
+                                    </div>
+                                </div>
+                                </fieldset>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--End Content--> 
+                 <!--Start Task-->
+                 
+                
+         
+                
+<!--End edit task-->       
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

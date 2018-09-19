@@ -1,0 +1,1862 @@
+
+   
+<div class="main" ng-controller="manageContentCtrl as ctrl" ng-show="ShowAdminForm">
+  
+    <!-- #side-nav End -->
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                         <li class="" ng-show="!hideNavBar && !editForm">Manage Content</li>
+
+                                             <li class="link" ng-click="cancelUser();" ng-show="hideNavBar"><a>Manage Content</a></li>
+                                        <li class="link" ng-click="cancelUser();" ng-show="editForm"><a>Manage Content</a></li>
+
+
+                                        <li class="" ng-show="hideNavBar" ng-click="showAddForm()">Create New Content</li>
+                                         <li class="" ng-show="editForm" ng-click="EditContents(managedatas.Permission,managedatas.id,managedatas.platformIdentity);">Edit Content</li>
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar(); $event.preventDefault()"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                               <button class="pri-cus-buttons pull-right visible-md-block visible-lg-block" ng-click="showAddForm()" ng-show="!hideNavBar && !editForm"> <i class="fa fa-plus"></i> Create New Content</button>
+                             
+                            </div>
+                            <!-- /.navbar-collapse -->
+                         <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        <div class="page-contents">
+            <div class="container-fluid">
+              <div class="list-view">
+               <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Manage Content</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                     <button class="pri-cus-buttons" ng-click="showAddForm()" ng-show="!hideNavBar && !editForm"><i class="fa fa-plus"></i> Create New Content</button>
+                      
+                   </div>
+               </div>
+                
+                <div class="row"  ng-show="gridview">
+                    <div class="col-lg-12 filter-container finline">
+                        <label ng-model="collapsed" ng-click="collapsed = !collapsed"><i class="fa fa-chevron-down" ></i> Filter</label>
+                        <div class="filter-fields form-inline" ng-hide="collapsed">
+                            <div class="row mar-10-0">
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="platform">Platform</label>
+                                        <select class=form-control id="contentPlatform" ng-model="contentPlatform" name="contentPlatform" ng-options="selectPlatform.id as selectPlatform.PName for selectPlatform in Platformnames1" required>
+                                      <option value="" selected >-- Select Platform --</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group ">
+                                        <label for="status">Status</label>
+                                        <select class=form-control id="contentStatus" ng-model="contentStatus" name="contentStatus" ng-options="selectStatus.id as selectStatus.SName for selectStatus in Statusnames" required>
+                                      <option value="" selected >-- Select Status --</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="client">Client</label>
+                                         <select class=form-control id="contentClient" ng-model="contentClient" name="contentClient" ng-options="selectClient.id as selectClient.ClientName for selectClient in Clientnames"  required>
+                                        <option value="" selected >-- Select Client --</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="editor">Editor</label>
+                                         <select class=form-control id="contentEditor" ng-model="contentEditor" name="contentEditor" ng-options="selectEditor.id as selectEditor.EditorName for selectEditor in Editornames"  required>
+                                        <option value="" selected >-- Select Editor --</option>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mar-10-0">
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="writer">Writer </label>
+                                         <select class=form-control id="contentWriter" ng-model="contentWriter" name="contentWriter" ng-options="selectWriter.id as selectWriter.WriterName for selectWriter in Writernames"  required>
+                                        <option value="" selected >-- Select Writer --</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="key">Keyword</label>
+                                    <input type="text" class="form-control" name="contentKeyword" ng-model="contentKeyword" id="contentKeyword">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="sdate">Start Date</label>
+                                        <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                     <input  class="form-control" id="contentstartDate"  ng-model="contentstartDate" name="contentstartDate"  required>
+                                  </datepicker>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-4 col-lg-3">
+                                    <div class="form-group">
+                                        <label for="edate">End Date</label>
+                                        <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                     <input  class="form-control" id="contentendDate" min="2000-01-01" ng-model="contentendDate" name="contentendDate"  required>
+                                  </datepicker>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 clearfix text-center">
+                                    <button type="button" class="btn btn-default mar-10" ng-click="emptyFilterByContents()">Reset</button>
+                                    <button type="button" class="pri-cus-buttons mar-10" ng-click="FilterByContents()">Apply</button>
+                                </div>
+                            </div>
+                        </div><!-- end of .filter-fields form-inline -->                     
+                    </div>
+                </div> <!-- end of .filter-container -->
+                <div class="row"  ng-show="gridview">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                      <div class="table-responsive cus-cards" id="customers">
+                          <table wt-responsive-table class="table table-striped responsive">
+                              <thead>
+                                  <tr>
+                                      <th>&nbsp;</th>
+                                      <th ng-click="manageContentSort(asc=!asc,'ContentName');">Content Name <i class="fa fa-sort"></i></th>
+                                      <th ng-click="manageContentSort(asc=!asc,'PlatformName');">Platform <i class="fa fa-sort"></i></th>
+                                      <th ng-click="manageContentSort(asc=!asc,'CategoryName');">Category <i class="fa fa-sort"></i></th>
+                                      <th ng-click="manageContentSort(asc=!asc,'StatusName');">Status <i class="fa fa-sort"></i></th>
+                                      <th>Scheduled On</th>
+                                      <th>Saved</th>
+                                      <th>&nbsp;</th>
+                                  </tr>
+                              </thead>
+                    <tbody class="" ng-repeat="managedatas in manageContentDatas |filter: taskToFilter | pagination : currentPage*itemsPerPage | limitTo: itemsPerPage">
+                                  <tr class="" >
+                                      <td><i class="fa fa-file-text-o not-link"></i></td>
+                                      <td>{{managedatas.ContentName}}</td>
+                                      <td>
+                                         <span class="whitspace">{{managedatas.PlatformName}}</span>
+                                      </td>
+                                      <td>{{managedatas.CategoryName}}</td>
+                                      <td>{{managedatas.StatusName}}</td>
+                                      <td>{{managedatas.ScheduledOn}}</td>
+                                      <td>{{managedatas.Saved}}</td>                                      
+                                      <td class="whitspace">
+                               
+                                         <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Edit" 
+                                          ng-show="managedatas.Permission.lnkEdit==true || managedatas.Permission.lnkEditFbPack==true ||managedatas.Permission.lnkEditPack==true || managedatas.Permission.lnkEditTask==true || managedatas.Permission.lnkEditTwPack==true" ng-click="EditContents(managedatas.Permission,managedatas.id,managedatas.PlatformName);" tooltip></i>
+
+                                          <i class="fa fa-file-pdf-o" data-toggle="tooltip" data-placement="top" title="Export as PDF"
+                                          ng-show="managedatas.Permission.lnkExportPdf==true" ng-click="fnExportsAsPDF(managedatas.id,managedatas.PlatformName)" tooltip></i>
+
+                                          <i class="fa fa-file-word-o" data-toggle="tooltip" data-placement="top" title="Export as Word"
+                                          ng-show="managedatas.Permission.lnkExportDoc==true" ng-click="fnExportsAsWord(managedatas.id,managedatas.PlatformName)" tooltip></i>
+
+                                         <i class="fa fa-clock-o" data-toggle="tooltip" data-placement="top" title="Set Schedule Date"
+                                          ng-show="managedatas.Permission.lnkSetSchedule==true" ng-click="setSchedule(managedatas.id,'SetSchedule');" tooltip></i>
+
+                                          <i class="fa fa-history" data-toggle="tooltip" data-placement="top" title="Re-Schedule" tooltip
+                                          ng-show="managedatas.Permission.lnkReSchedule==true" ng-click="EditContents(managedatas.Permission,managedatas.id,managedatas.PlatformName,'Reschedule');"></i>
+
+                                          <i class="fa fa-archive" data-toggle="tooltip" data-placement="top" title="Archive" tooltip
+                                          ng-show="managedatas.Permission.lnkArchive || managedatas.Permission.lnkArchivePack==true" ng-click="fnArchive(managedatas.Permission,managedatas.id)"></i>
+
+                                          <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="Delete" ng-click="fnDelete(managedatas.Permission,managedatas.id)"
+                                          ng-show="managedatas.Permission.lnkDelete || managedatas.Permission.lnkDeletePack || managedatas.Permission.lnkDeleteTask==true" tooltip></i>
+                                          
+                                          <i class="fa fa-thumbs-o-up" data-toggle="tooltip" data-placement="top" title="Approve" tooltip
+                                            ng-click="fnApprove(managedatas.id)"
+                                          ng-show="managedatas.Permission.lnkApprove==true"></i>
+                                      
+                                          <i class="fa fa-repeat" data-toggle="tooltip" data-placement="top" title="Decline" tooltip
+                                          ng-click="EditContents(managedatas.Permission,managedatas.id,managedatas.PlatformName,'Decline');"
+                                          ng-show="managedatas.Permission.lnkDecline==true"></i>
+                                          
+                                          <i class="fa fa-list" data-toggle="tooltip" data-placement="top" title="Schedule" tooltip ng-show="managedatas.Permission.lnkSchedule==true" ng-click="EditContents(managedatas.Permission,managedatas.id,managedatas.PlatformName,'schedule');"></i>
+                                          
+                                          <i class="fa fa-ban" data-toggle="tooltip" data-placement="top" title="Cancel" tooltip
+                                          ng-click="fnCancel(managedatas.id)"
+                                          ng-show="managedatas.Permission.lnkCancel==true"></i>
+                                      </td>
+                                  </tr>
+                                 <!--  <tr class="link">
+                                      <td colspan="8">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</td>
+                                  </tr>-->
+                                  <tr class="highlight">
+                                      <td colspan="8"><strong>{{managedatas.Content}}</strong></td>
+                                  </tr> 
+                                  
+                                  
+                              </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div> <!-- end of content -->
+                  <div class="row" ng-show="gridview">
+                   <div ng-show="returnedData.length > 0"  class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <ul class="cus-pagination reset">
+                                    <li ng-repeat="n in range()" ng-class="{current: n == currentPage}" ng-click="setPage(n)">
+                                    <a href="">{{n+1}}</a></li>
+                                    
+                                </ul>
+                            </div>
+
+                            <div class="pagination-div pull-right">
+                                <nav>
+                                  <ul class="cus-pagination-pager reset">
+                                    <li><button  class="pri-cus-buttons" ng-class="DisablePrevPage()" ng-click="prevPage()" ng-disabled="predisable"><i class="fa fa-angle-double-left" ></i> Previous</button></li>
+                                     
+                                    <li><button class="pri-cus-buttons" ng-class="DisableNextPage()" ng-click="nextPage()" ng-disabled="nextdisable">Next <i class="fa fa-angle-double-right"></i></button></li>
+                                  </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </div><!-- end of .pagination -->
+                </div>
+                
+                <!--Start Add Content--> 
+                <div class="row form-view"  ng-show="AddUserForm">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="manageContentForm" class="styles" novalidate>
+                               <fieldset>
+                               <legend>Content Details</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="title">Title<span class=required> *</span></label>
+                                     <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageTitle.$invalid]">
+                                            <input type="text" class="form-control" id="manageTitle" name="manageTitle" ng-model="manageTitle" required>
+                                                <span class=required ng-show="submitted && manageContentForm.manageTitle.$error.required">Give Title</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="category">Category<span class=required> *</span></label>
+                           <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageCategoryType.$invalid]">
+                            <select class=form-control ng-model="manageCategoryType" name="manageCategoryType" ng-options="category.id as category.CategoryN for category in CategoryList" required >
+                                              <option value="" selected style=''>-- Select Category Type --</option>
+                                                </select>
+                                                <span class=required ng-show="submitted && manageContentForm.manageCategoryType.$error.required">Select Category Type</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="platform">Platform<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.optradio.$invalid]">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="radio-inline mar-0-10" ng-repeat="prt in Platformnames">
+                                                            <input type=radio name="optradio" ng-model="radioValues.manage" required value="{{prt.id}}" ng-init="$index==0?(role=prt):''">{{prt.PName}}
+                                                        </label>
+                                                        <span class=required ng-show="submitted && manageContentForm.optradio.$error.required">Choose Platform </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageClient1.$invalid]">
+                                                <select class=form-control id="manageClient" ng-model="manageClient" name="manageClient1" ng-options="selectClient.id as selectClient.ClientName for selectClient in Clientnames" required multiple>
+                                                    <option value="" selected>-- Select Client --</option>
+                                                </select>
+                                               <span class=required ng-show="submitted && manageContentForm.manageClient1.$error.required">Select Client</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="exdate">Expire Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageExpryDate.$invalid]">
+                                                <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                                    <input class="form-control" id="manageExpryDate" ng-model="manageExpryDate" name="manageExpryDate" required>                                                   
+                                                </datepicker>
+                                                <span class=required ng-show="submitted && manageContentForm.manageExpryDate.$error.required">Select Expire Date</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Notes</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageNotes.$invalid]">
+                                                <textarea class="form-control" id="notes" rows="3" name="manageNotes" ng-model="manageNotes" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div data-facebook-content ng-show="radioValues.manage == 'fb'">
+                                <legend>Facebook Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbmicro">Microblog</label>                                          
+                                                <textarea class="form-control" id="fbmicro" rows="3" ng-trim="false" maxlength="5000" name="manageFBMblog" ng-model="manageFBMblog"> </textarea>
+                                                <span>{{5000 - manageFBMblog.length}} Characters Left</span>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitle">Title</label>
+                                                <input type="text" class="form-control" id="fbtitle" name="manageFBTitle" ng-model="manageFBTitle">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitlelink">Title Link</label>
+                                                <input type="text" class="form-control" id="fbtitlelink"  name="manageFBTlLink" ng-model="manageFBTlLink">  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbdes">Description</label>
+                                                <textarea class="form-control" id="fbdes" rows="3" ng-trim="false" maxlength="5000" name="manageFBDescrip" ng-model="manageFBDescrip" required></textarea>
+                                                <span>{{5000 - manageFBDescrip.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                            <input type="file" ng-model="manageFBPic" accept="image/gif, image/jpeg, image/png" base-sixty-four-input name="manageFBPic" required maxsize="750px" onchange="document.getElementById('fbsingle').src = window.URL.createObjectURL(this.files[0])">
+                                           <!--<span class=required ng-show="manageContentForm.manageFBPic.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <legend>Image Preview</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4 mar-5-0" ng-show="imgLink.length > 25  || manageFBPic" >
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="fbsingle"  ng-model="blahtwt"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removefbsingle();manageFBPic=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                  
+                                   </div>
+                               
+                                <div data-facebook-image  ng-show="radioValues.manage == 'fi'">        
+                                <legend>Facebook Image</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                          <label for="micro">Description</label>
+                                              <textarea class="form-control" id="micro" rows="3" ng-trim="false" maxlength="5000"  name="manageFBIdesc" ng-model="manageFBIdesc" required></textarea>
+                                              <span>{{5000 - manageFBIdesc.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                             <input type="file" ng-model="manageFBIpic" accept="image/gif, image/jpeg, image/png" base-sixty-four-input name="manageFBIpic" required onchange="document.getElementById('facebkImg').src = window.URL.createObjectURL(this.files[0])"> 
+                                    <!--<span class=required ng-show="manageContentForm.manageFBIpic.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <legend>Image Preview</legend>
+                                <div class="row" ng-show="imgLink.length > 25 || manageFBIpic">
+                                    <div class="col-sm-12 col-md-4 mar-5-0">
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="facebkImg"  ng-model="facebkImg"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removefacebkImg();manageFBIpic=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                        </div>
+                                
+                                 <div data-twitter-content  ng-show="radioValues.manage == 'tw'">
+                                <legend>Twitter Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="twmicro">Microblog</label>
+                                            <textarea class="form-control" id="twmicro" rows="3" ng-trim="false" maxlength="140" name="manageTwtMblog" ng-model="manageTwtMblog" ></textarea>
+                                                <span>{{140 - manageTwtMblog.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                            <input type="file" ng-model="manageTwtpic" accept="image/gif, image/jpeg, image/png" base-sixty-four-input name="manageTwtpic"  accept="image/gif, image/jpeg, image/png" maxsize="750px" onchange="document.getElementById('singletwt').src = window.URL.createObjectURL(this.files[0])">
+                                         <!--<span class=required ng-show="manageContentForm.manageTwtpic.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <legend>Image Preview</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4 mar-5-0" ng-show="imgLink.length > 25 || manageTwtpic" >
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="singletwt"  ng-model="blahtwt"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removesingletwt();manageTwtpic=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                </div>                                
+                               <div data-blog-content  ng-show="radioValues.manage == 'wp'">
+                                <legend>Blog Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="btitle">Title</label>
+                                            <input type="text" class="form-control"  name="manageBlogTitl" ng-model="manageBlogTitl" id="btitle">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="micro">Content</label>
+                                            <div text-angular="text-angular" class="textangular" name="manageBlogcontent" ng-model="manageBlogcontent" ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="tags">Tags</label>
+                                            <input type="text" class="form-control"  name="manageBlogTag" ng-model="manageBlogTag" id="tags" ng-trim="false" maxlength="255">
+                                              <span>{{255 - manageBlogTag.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                             <input type="file" ng-model="manageBlogImg" base-sixty-four-input name="manageBlogImg" required accept="image/gif, image/jpeg, image/png" maxsize="750px" onchange="document.getElementById('singleblg').src = window.URL.createObjectURL(this.files[0])">
+                                                 <!-- <span class=required ng-show="manageContentForm.manageBlogImg.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                        </div>
+                                    </div>
+                                </div>
+                               <legend>Image Preview</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-4 mar-5-0" ng-show="imgLink.length > 25 || manageBlogImg" >
+                                        <div class="dz-default">  
+                                             <img  src="{{imgLink}}" id="singleblg"  ng-model="blahtwt"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removesingleblg();manageBlogImg=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                               </div>
+                                <div ng-show="radioValues.manage != 'wp'">
+                               <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control" id="lurl" ng-model="longUrl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control" id="surl" ng-model="shortedUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="resetURL()">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="shortURL(longUrl)">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div> 
+                                </div>
+                             
+                                <legend ng-show="statusValue=='0' ">Scheduling</legend>
+                                <div class="row" ng-show="statusValue=='0'">
+                                 <div class="col-sm-12 col-md-12" ng-hide="clientHide " >
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.manageClient.$invalid]">
+                                                <select class=form-control id="manageClient" ng-model="manageClientValue" name="manageClient" ng-options="selectClient.id as selectClient.ClientName for selectClient in Clientnames" required>
+                                                    <option value="" selected>-- Select Client --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="podate">Post Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.contentpostDate.$invalid]">
+                                           <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                             <input  class="form-control" id="contentpostDate" ng-model="contentpostDate" name="contentpostDate"  required>
+                                          </datepicker>
+                                          <span class=required ng-show="submitted && manageContentForm.contentpostDate.$error.required">Select Date</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="potime">Post Time<span class=required> *</span></label> 
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.time2.$invalid]">
+                                     <ng-timepicker id="timePicker"  class="dropdown"  ng-model="ctrl.time2" init-time="08:00" required object-to-inject="injectedObject"></ng-timepicker>
+                                        <span class=required ng-show="submitted && !ctrl.time2">Select Time</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                     <div class="col-xs-6 col-sm-6 col-md-6"  ng-hide="scheduleButtons">
+                                 <div class="form-group ">
+                                   <label class="radio-inline">
+                                <input type="checkbox" name="optradio" ng-model="checkboxModel.value2" ng-true-value="'YES'" ng-false-value="'NO'" ng-change="saveTemplate()" required="" value="wp"  style="">Save changes to template and schedule  
+                                  </label>   
+                                      </div>
+                                         </div>
+                                   <div class="col-xs-12 col-sm-12 col-md-12" ng-hide="scheduleButtons">
+
+                                        <div class="form-group text-center">
+
+                                            <button type="button" class="pri-cus-buttons " ng-click="scheduleButton();">Schedule</button>
+
+                                        </div>
+                                        </div>
+
+                                    <div class="col-xs-12 col-sm-12 col-md-12" ng-show="scheduleButtons">
+
+                                        <div class="form-group text-center">
+
+                                            <button type="button" class="pri-cus-buttons mar-5" ng-click="fnReSchedule();">ReSchedule</button>
+                                            </div>
+                                        </div>
+                                    <hr>
+                                            </div>
+
+
+
+
+                              <div class="row" ng-show="statusValue=='5'">
+
+                            <div class="col-sm-12 col-md-12">
+
+                                <div class="form-group">
+
+                                    <label for="notes">Decline Reason</label>
+
+                                    <textarea class="form-control" id="notes" rows="3" ng-model="satus5declineReason"></textarea>
+
+                                </div>
+                                </div>
+
+                            <div class="row">
+
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+
+                                    <div class="form-group text-right">
+
+                                        <button type="button" class="btn btn-default" ng-click="fnStatus5Decline();">Decline</button>
+
+                                    </div>
+                                    </div>
+
+                                <div class="col-sm-6 col-md-6">
+
+                                    <div class="form-group text-left">
+
+                                        <button type="button" class="pri-cus-buttons " ng-click="fnStatus5Approve();">Approve Content</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+                            </div>
+
+
+                                <legend ng-show="onlyforAdd">Scheduling</legend>
+                                <div class="row" ng-show="onlyforAdd">                                
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="podate">Post Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.contentpostDate.$invalid]">
+                                           <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                             <input  class="form-control" id="contentpostDate" ng-model="contentpostDate" name="contentpostDate"  required>
+                                          </datepicker>
+                                          <span class=required ng-show="submitted && manageContentForm.contentpostDate.$error.required">Select Date</span>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="potime">Post Time<span class=required> *</span></label> 
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.time2.$invalid]">
+                               <ng-timepicker id="timePicker"  class="dropdown"  ng-model="ctrl.time2" init-time="08:00" object-to-inject="injectedObject"></ng-timepicker>
+                                           <span class=required ng-show="submitted && !ctrl.time2">Select Time</span></div>
+                                        </div>
+                                    </div>
+                                    </div>
+
+                              
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix text-center">
+                                      <button type="button" class="btn btn-default mar-5" ng-click="cancelUser();">Cancel</button>
+                                      <button type="button" ng-hide="approveScheduleButton" class="sec-cus-buttons mar-5" ng-click="ScheduleAndApproval()">Approve &amp; Schedule</button>
+                                        <button type="button" ng-hide="clientApprovalButton" class="sec-cus-buttons mar-5" ng-click="SendClientApproval()">Send to Client for Approval</button> 
+                                        <button type="button" class="pri-cus-buttons mar-5" ng-click="AddManageContent()" ng-show="showSaveButton">Save as Template</button>
+                                        <button type="button" class="pri-cus-buttons mar-5" ng-click="updateContents();" ng-show="!showSaveButton">Save</button>
+                                        <button type="button" class="pri-cus-buttons mar-5" ng-click="reSendtoClientApproval();" ng-show="statusValue=='7'">Re-Send to Client for Approval</button>
+                                    </div>
+                                </div>
+                                </fieldset>
+                                 
+   
+
+                            </form>
+                       
+                    </div>
+                </div>
+                      </div>
+                <!--End Content--> 
+                 <!--Start Task-->
+                 
+                
+         
+ <div class="row form-view" ng-show="writingtask">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="writingTaskForm" class="styles" novalidate>
+                               <fieldset>
+                               <legend>Writing Task Details</legend>
+                               <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                             <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.title.$invalid]">
+                                            <label for="title">Title<span class=required> *</span></label>
+                                            <input type="text" class="form-control" id="title" ng-model="title" name="title" required>
+                                                 <span class=required ng-show="submitted && writingTaskForm.title.$error.required">Give Title </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                     <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="ddate">Saved On</label>
+                                        <input type="text" class="form-control" id="saveDate" ng-model="saveDate" name="saveDate" ng-disabled="saveDate">
+                                            
+                                    </div>
+                                </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="ddate">Due Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.ddate.$invalid]">
+                                            <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                                 <input  class="form-control" id="ddate" ng-model="ddate" name="ddate" required>
+                                            </datepicker>
+                                            <span class=required ng-show="submitted && writingTaskForm.ddate.$error.required">Give Due Date</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="sdate">Schedule Date<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.sdate.$invalid]">
+                                            <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                             <input  class="form-control" id="sdate" ng-model="sdate" name="sdate" required>
+                                            </datepicker>
+                                            <span class=required ng-show="submitted && writingTaskForm.sdate.$error.required">Give Schedule Date</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="stime">Schedule Time<span class=required> *</span></label>
+                                            <ng-timepicker id="timePicker"  class="dropdown"  init-time="00:00" ng-model="ctrl.stime1" object-to-inject="injectedObject"></ng-timepicker>
+                                        </div>
+                                    </div>
+                                   </div>
+                                     <div class="row">
+                                    <div ng-show="onlyParam" class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.status2.$invalid]">
+                                                <select class=form-control ng-model="Status1" name="status2" ng-options="status.id as status.SName for status in Statusnames"  required>
+                                                <option value="" selected >-- Select Status Type --</option>
+                                                </select>
+                                                <span class=required ng-show="submitted && writingTaskForm.status2.$error.required">Select Status</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                      <div  ng-show="!onlyParam"  class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.status2.$invalid]">
+                                                <select class=form-control ng-model="Status1" name="status2" ng-options="status.id as status.SName for status in Statusnames1"  required>
+                                                <option value="" selected >-- Select Status Type --</option>
+                                                </select>
+                                                <span class=required ng-show="submitted && writingTaskForm.status2.$error.required">Select Status</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     
+                                      <div class="col-sm-12 col-md-6">
+                                           <div class="form-group">
+                                               <label for="createdby">Created By</label>
+                                               <input type="text" class="form-control" id="Createdby" ng-model="Createdby" name="Createdby" ng-disabled="Createdby"> 
+                                           </div>
+                                       </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                           <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.Editor.$invalid]">
+                                            <label for="editor">Editor<span class=required> *</span></label>
+                                                <select class=form-control ng-model="Editor" name="Editor" ng-options="editor.id as editor.EditorName for editor in Editornames" required>
+                                                    <option value="" selected >-- Select Editor Type --</option>
+                                                </select>
+                                                <span class=required ng-show="submitted && writingTaskForm.Editor.$error.required">Select Editor Type</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="writer">Writer<span class=required> *</span></label>
+                                                 <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.Writer.$invalid]">
+                                                  <select class=form-control ng-model="Writer" name="Writer" ng-options="writer.id as writer.WriterName for writer in Writernames"  required>
+                                                    <option value="" selected >-- Select Writer Type --</option>
+                                                  </select>
+                                                  <span class=required ng-show="submitted && writingTaskForm.Writer.$error.required">Select Writer Type</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.Client.$invalid]">
+                                                <select class=form-control ng-model="Client" name="Client" ng-options="client.id as client.ClientName for client in Clientnames" required>
+                                                    <option value="" selected>-- Select Client Type --</option>
+                                                </select>
+                                                <span class=required ng-show="submitted && writingTaskForm.Client.$error.required">Select Client Type</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="category">Category<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.category2.$invalid]">
+                                                <select class=form-control ng-model="Category" name="category2" ng-options="category.id as category.CategoryN for category in CategoryList" required>
+                                                    <option value="" selected>-- Select Category --</option>
+                                                </select>
+                                                <span class=required ng-show="submitted && writingTaskForm.category2.$error.required">Select Category </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                               <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                             <label for="platform">Platform</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.Platform.$invalid]">
+                                               <select class=form-control ng-model="Platform" name="Platform" ng-options="platform.id as platform.PName for platform in Platformnames" ng-disabled="Platform">
+                                    <option value="" selected >-- Select Platform --</option>
+                                    </select>
+                                                <span class=required ng-show="submitted && writingTaskForm.Platform.$error.required">Select Platform</span>
+                                            </div>
+                                    </div>
+                                    </div>       
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="amount">Amount(USD)<span class=required> *</span></label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.amount.$invalid]">
+                                                <input type="text" class="form-control" id="amount" ng-model="amount" name="amount" required>
+                                                <span class=required ng-show="submitted && writingTaskForm.amount.$error.required">Amount required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Brief</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.brife.$invalid]">
+                                                <textarea class="form-control" id="brife" rows="3" ng-model="brife" name="brife" required></textarea>
+                                                <span>{{3000 - brife.length}} Characters Left</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Notes</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.Notes.$invalid]">
+                                                <textarea class="form-control" id="Notes" rows="3" ng-model="Notes" name="Notes" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Logs</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.Logs.$invalid]">
+                                                <textarea class="form-control" id="Logs" rows="3" ng-model="Logs" name="Logs" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="brife">Decline reason</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.declineReason.$invalid]">
+                                                <textarea class="form-control" id="declineReason" rows="3" ng-model="declineReason" name="declineReason" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                  <div class="row">
+                                    <div class="col-sm-12 col-md-12 clearfix">
+                                          <button type="button" class="pri-cus-buttons pull-right" ng-click="declineWriter();" ng-show="!showSaveButton">Decline & send back to writer</button>
+                                    </div>
+                                </div>
+                                
+                                
+                                  <div ng-show="dispalyFBContent">
+                                <legend>Facebook Content</legend>
+                              
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbmicro">Microblog</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.fbmicro.$invalid]">
+                                                <textarea class="form-control" id="fbmicro" rows="3"  name="fbmicro" ng-model="fbmicro" maxlength="300" ng-trim="false"> </textarea>
+                                                <span>{{300 - fbmicro.length}} Characters Left</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitle">Title</label>
+                                                <input type="text" class="form-control" id="fbtitle"  name="fbtitle" ng-model="fbtitle" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbtitlelink">Title Link</label>
+                                                <input type="text" class="form-control" id="fbtitlelink"  name="fbtitlelink" ng-model="fbtitlelink" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="fbdes">Description</label>                                            
+                                                <textarea class="form-control" id="fbdes" rows="3"  name="fbdes" ng-model="fbdes"  maxlength="300" ng-trim="false"> </textarea>
+                                                <span>{{300 - fbdes.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label>
+                                        <input type="file" name="faceIMage" maxsize="750px" ng-model="FBmyfile" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('taskfb').src = window.URL.createObjectURL(this.files[0])"> 
+                                                 <!--<span class=required ng-show="writingTaskForm.faceIMage.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                      <legend>Image Preview</legend>
+                                       <div class="row" ng-show="TaskimgLink.length > 25 || FBmyfile">
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="dz-default">  
+                                             <img  src="{{TaskimgLink}}" id="taskfb"  ng-model="blahfbk"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removetaskfb();FBmyfile=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control" id="lurl" ng-model="longUrl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control" id="surl" ng-model="shortedUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="resetURL()">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="shortURL(longUrl)">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                      
+                                   </div>
+
+                              <div ng-show="dispalyTWContent">
+                                <legend>Twitter Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="twmicro">Microblog</label>
+                                            <div class="control-group" ng-class=" {true: 'error'}[submitted && writingTaskForm.twmicro.$invalid]">
+                                                <textarea class="form-control" id="twmicro" rows="3"  name="twmicro" ng-model="twmicro"  maxlength="140" ng-trim="false"> </textarea>
+                                                <span>{{140 - twmicro.length}} Characters Left</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Picture</label><div>
+                              <input type="file" ng-model="twmyfile" name="twitImage" maxsize="750px" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('tasktwit').src = window.URL.createObjectURL(this.files[0])">
+                                             <!--<span class=required ng-show="writingTaskForm.twitImage.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                  <legend>Image Preview</legend>
+                                <div class="row" ng-show="TaskimgLink.length > 25 || twmyfile">
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="dz-default">  
+                                             <img  src="{{TaskimgLink}}" id="tasktwit"  ng-model="blahtwit"  width="100%" height="100%"/>
+
+                                        </div>
+                                        <a ng-click="removetasktwit();twmyfile=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                 
+                                <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control" id="lurl" ng-model="longUrl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control" id="surl" ng-model="shortedUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="resetURL()">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="shortURL(longUrl)">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                      </div>
+                                 <div ng-show="dispalyBlogContent">
+                                <legend>Blog Content</legend>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="btitle">Title</label>
+                                                <input type="text" class="form-control"  name="btitle" ng-model="btitle" id="btitle" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="blog-content">Content</label>                               
+                                            <div text-angular="text-angular" class="textangular" name="htmlcontent" ng-model="htmlcontent" ta-disabled='disabled'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="tags">Tags</label>
+                                                <input type="text" class="form-control"  name="tags" ng-model="tags" id="tags" requiredmaxlength="255" ng-trim="false">
+                                        <span>{{255 - tags.length}} Characters Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Featured Image</label>
+                                            <div>
+                                  <input type="file" ng-model="wpmyfile" name="blogImage" maxsize="750px" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('taskblg').src = window.URL.createObjectURL(this.files[0])"> 
+                                                 <!--<span class=required ng-show="writingTaskForm.blogImage.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                     <legend>Image Preview</legend>
+                                       <div class="row" ng-show="TaskimgLink.length > 25 || wpmyfile">
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="dz-default">  
+                                             <img  src="{{TaskimgLink}}" id="taskblg"  ng-model="blahblg"  width="100%" height="100%"/>
+                                        </div>
+                                        <a ng-click="removetaskblg();wpmyfile=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                    </div>
+                                </div>
+                                </div>
+                                 
+                                  <hr>
+                                   <div class="row">
+                                    <div class="col-sm-12 col-md-12 text-center">                            
+                                           <button type="button" class="btn btn-default mar-0-5" ng-click="cancelUser();">Cancel</button>
+                                           <button type="button" ng-show="approveScheduleBtn" class="sec-cus-buttons mar-5" ng-click="ScheduleAndApprovalTask()">Approve &amp; Schedule</button>
+                                           <label ng-show="approveScheduleBtn">or</label>
+                                            <button type="button" ng-show="clientApprovalBtn" class="sec-cus-buttons mar-5" ng-click="SendClientApprovalTask()">Send to Client for Approval</button>
+                                          <button type="button" class="pri-cus-buttons mar-0-5" ng-click="updateContents();" ng-show="!showSaveButton">Save</button>
+                                           
+                                    </div>
+                                </div>
+                             
+                                </fieldset>
+
+                                    
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+<!--End edit task-->       
+                
+                <div class="row form-view" ng-show="setscheduleDateForm">
+
+    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+    
+        <div class="cus-panels-with-pad mar-10-0">
+        
+            <form name="setSchduleform" class="styles">
+            
+                <fieldset>
+                
+                    <legend>Re-set Schedule Date</legend>
+                
+                    <div class="row">
+                    
+                        <div class="col-sm-12 col-md-12">
+                        
+                            <div class="form-group">
+                            
+                                <label for="client">Status<span class=required> *</span></label>
+                            
+                                <div class="control-group" ng-class=" {true: 'error'}[submitted && siteblogplansForm.statusValues.$invalid]">
+                                
+                                    <select class="form-control" id="statusvalues" ng-model="statusvalues" name="statusvalues" ng-options="item.id as item.SName for item in statusValues" required></select>
+                                    <span class=required ng-show="submitted && siteblogplansForm.statusvalues.$error.required">Select Status</span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                    <div class="row">
+                    
+                        <div class="col-sm-6 col-md-6">
+                        
+                            <div class="form-group">
+                            
+                                <label for="podate">Post Date<span class=required> *</span></label>
+                            
+                                <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.setscheduleDate.$invalid]">
+                                
+                                    <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                    
+                                        <input class="form-control" id="contentpostDate" ng-model="contentpostDate" name="setscheduleDate" required>
+                                        <!--<span class=required>{{errMessage1}}</span>-->
+                                        </datepicker>
+                                    <span class=required ng-show="submitted && manageContentForm.setscheduleDate.$error.required">Select Date</span>
+                                </div>
+                                </div>
+                            </div>
+                    
+                        <div class="col-sm-6 col-md-6">
+                        
+                            <div class="form-group">
+                            
+                                <label for="potime">Post Time<span class=required> *</span></label>
+                            
+                                <div class="control-group" ng-class=" {true: 'error'}[submitted && manageContentForm.time2.$invalid]">
+                                
+                                  <ng-timepicker id="timePicker" class="dropdown" ng-model="ctrl.time2" init-time="08:00" required object-to-inject="injectedObject"></ng-timepicker>
+                                    <span class=required ng-show="submitted && !ctrl.time2">Select Time</span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                
+                    <div class="row">
+                    
+                        <div class="col-sm-12 col-md-12 text-center">
+                        
+                            <button ng-click="cancelUser();" type="button" class="btn btn-default ">Cancel</button>
+                        
+                            <button type="button" class="pri-cus-buttons" ng-click="fnSetSchedule();" ng-show="setscheduleDateForm">Save</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+  
+               <div class="row form-view" ng-show="Packages">
+                    <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                        <div class="cus-panels-with-pad mar-10-0">
+                            <form name="create-new-package" class="styles">
+                               <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="pname">Package Name<span class=required> *</span></label>
+                                            <input type="text" class="form-control" id="pname" ng-model="packageName">
+                                             <span class=required ng-show="submitted && !packageName">Give Package Name</span>
+                                        </div>
+                                    </div>
+                                   <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="client">Client <span class=required> *</span></label>
+                                               <select class=form-control id="cli" ng-model="cli" name="cli" ng-options="cli.id as cli.ClientName for cli in Clientnames" required >
+                                    <option value="" selected style=''>-- Select Client  --</option>
+                                    </select>
+                                            <span class=required ng-show="submitted && !cli">Select Client</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="sdate">Start Date<span class=required> *</span></label>
+                                             <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                     <input  class="form-control" id="sdate" ng-model="sdate">
+                                     </datepicker>
+                                        </div>
+                                        <span class=required ng-show="submitted && !sdate">Select Start Date</span>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="ddate">Due Date<span class=required> *</span></label>
+                                           <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                               <input  class="form-control" id="ddate" ng-model="ddate">
+                                         </datepicker>
+                                        </div> 
+                                        <span class=required ng-show="submitted && !ddate">Select Due Date</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="notes">Notes</label>
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="editor">Editor<span class=required> *</span></label>
+                                                     <select class=form-control id="edi1" ng-model="edi1" name="edi1" ng-options="edi.id as edi.EditorName for edi in Editornames" required>
+                                    <option value="" selected style=''>-- Select Editor --</option>
+                                    </select>
+                                            <span class=required ng-show="submitted && !edi1">Select Editor</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="writer">Writer<span class=required> *</span></label>
+                                                        <select class=form-control id="wri1" ng-model="wri1" name="wri1" ng-options="wri.id as wri.WriterName for wri in Writernames" required >
+                                    <option value="" selected style=''>-- Select Writer --</option>
+                                    </select>
+                                             <span class=required ng-show="submitted && !wri1">Select Writer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="amount">Amount(USD)<span class=required> *</span></label>
+                                            <input type="text" class="form-control" id="amount" placeholder="In USD" ng-model="amount">
+                                            <span class=required ng-show="submitted && !amount"> Amount required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                          <label>
+                                            <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-checked="Archived == 1" ng-model="Archived">
+                                            Archived
+                                          </label>
+                                        </div>
+                                    </div>
+
+                                      <div class="col-sm-4" ng-show="showSingleDayCheckBox">
+                                        <div class="checkbox">
+                                          <label>
+                                            <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-checked="singleDay == 1" ng-model="singleDay" ng-disabled="showSingleDayCheckBox">
+                                            Single Day Package
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                 <form class="styles" ng-show="UpdateshowOnlySingleDayPackage" name="singlepackForm">
+                                <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                      <div class="panel-heading">
+                                         <h3 class="panel-title form-inline" data-toggle="collapse" data-parent="#accordion"  ng-show="FacebookContent && TwitterContent">Day 1 -{{dataTitle}} 
+                                     <i class="fa fa-chevron-down pull-right"  href="#Shr" ></i><ng-timepicker id="timePicker" ng-show="plaformTyp == 'pack'" class="dropdown"  ng-model="weklyctrl.posttime" object-to-inject="weklyctrl.injectedObject"></ng-timepicker></h3>
+                                    </div>
+                                    <div id="Singles{{$index}}" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-4" ng-repeat="fbontent in FacebookContent track by $index">
+                                                      <legend>Facebook Content</legend>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack'">
+                                                              <input type="radio"  ng-init="fbontent.Declined=fbontent.Declined" ng-model="fbontent.Declined" ng-value='false'> Approve
+                                                               <input type="radio"  ng-init="fbontent.Declined=fbontent.Declined"  ng-model="fbontent.Declined"  ng-value='true'> Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack' && fbontent.Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="fbontent.DeclineReason=fbontent.DeclineReason" ng-model="fbontent.DeclineReason">
+                                                       </div>
+                                                      </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbmicro">Microblog</label>
+                                                                <textarea class="form-control" id="fbmicro" rows="3" ng-model="fbontent.Microblog" maxlength="300" ng-trim="false"> </textarea>
+                                                                <span>{{300 - fbontent.Microblog.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitle">Title</label>
+                                                                <input type="text" class="form-control" id="fbtitle" ng-model="fbontent.Title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitlelink">Title Link</label>
+                                                                <input type="text" class="form-control" id="fbtitlelink" ng-model="fbontent.Titlelink">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbdes">Description</label>
+                                                                <textarea class="form-control" id="fbdes" rows="3" ng-model="fbontent.Description" maxlength="300" ng-trim="false"> </textarea>
+                                                                <span>{{300 - fbontent.Description.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="addpic">Add Picture</label>
+                                          <input type="file" name="FaceBimg" maxsize="750px" ng-model="fbontent.fb_picture" accept="image/gif, image/jpeg, image/png" base-sixty-four-input onchange="document.getElementById('facepackImg').src = window.URL.createObjectURL(this.files[0])">
+                                                                    <!-- <span class=required ng-show="singlepackForm.FaceBimg.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-show="fbontent.imgLink.length > 25 || fbontent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{fbontent.imgLink}}" id="facepackImg"  ng-model="facepackImg"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removefacepackImg();fbontent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                <div class="col-sm-8" >
+                                                    <div class="row">
+                                                        <div class="col-sm-6" ng-repeat="fbImgontent in FbImageContent track by $index">
+                                                            <legend>Facebook Image</legend>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack'">
+                                                              <input type="radio"  ng-init="fbImgontent.Declined=fbImgontent.Declined" ng-model="fbImgontent.Declined" ng-value='false'> Approve
+                                                               <input type="radio"  ng-init="fbImgontent.Declined=fbImgontent.Declined"  ng-model="fbImgontent.Declined"  ng-value='true'> Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack' && fbImgontent.Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="fbImgontent.DeclineReason=fbImgontent.DeclineReason" ng-model="fbImgontent.DeclineReason">
+                                                       </div>
+                                                         </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="desc">Description</label>
+                                                                        <textarea class="form-control" id="desc" rows="3" ng-model="fbImgontent.Description" maxlength="300" ng-trim="false"> </textarea>
+                                                                        <span>{{300 - fbImgontent.Description.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" name="FBimg" maxsize="750px" ng-model="fbImgontent.fb_picture" accept="image/gif, image/jpeg, image/png" base-sixty-four-input onchange="document.getElementById('fbipackImg').src = window.URL.createObjectURL(this.files[0])">
+                                                                       <!--  <span class=required ng-show="singlepackForm.FBimg.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                         <div class="row" ng-show="fbImgontent.imgLink.length > 25 || fbImgontent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{fbImgontent.imgLink}}" id="fbipackImg"  ng-model="fbipackImg"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removefbipackImg();fbImgontent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                        </div>
+                                                        <div class="col-sm-6" ng-repeat="twContent in TwitterContent track by $index">
+                                                            <legend>Twitter Content</legend>
+                                                            <div>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack'">
+                                                              <input type="radio"  ng-init="twContent.Declined=twContent.Declined" ng-model="twContent.Declined" ng-value='false'> Approve
+                                                               <input type="radio"  ng-init="twContent.Declined=twContent.Declined"  ng-model="twContent.Declined"  ng-value='true'> Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack' && twContent.Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="twContent.DeclineReason=twContent.DeclineReason" ng-model="twContent.DeclineReason">
+                                                       </div>
+                                                                </div>
+                                                      </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="twmicro">Microblog</label>
+                                                                        <textarea class="form-control" id="twmicro" rows="3" ng-model="twContent.Microblog" maxlength="140" ng-trim="false"> </textarea>
+                                                                        <span>{{140 - twContent.Microblog.length}} Characters Left</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                              <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" name="fbImg" maxsize="750px" ng-model="twContent.fb_picture" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="document.getElementById('twitpackImg').src = window.URL.createObjectURL(this.files[0])">
+                                                                         <span class=required ng-show="sevenpackForm.fbImg.$error.maxsize">Files must not exceed 5000 KB</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" ng-show="twContent.imgLink.length > 25 || twContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{twContent.imgLink}}" id="twitpackImg"  ng-model="twitpackImg"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removetwitpackImg();twContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                           
+                                                            <legend>URL Shortener</legend>
+                                                                  <div class="row">
+                                                                      <div class="col-sm-6 col-md-6">
+                                                                          <div class="form-group">
+                                                                              <label for="lurl">Long Url</label>
+                                                                              <input type="text" class="form-control" id="lurl" ng-model="twContent.longUrl">
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="col-sm-6 col-md-6">
+                                                                          <div class="form-group">
+                                                                              <label for="surl">Short Url</label>
+                                                                              <input type="text" class="form-control" id="surl" ng-model="twContent.shortedUrl">
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="row">
+                                                                      <div class="col-xs-6 col-sm-6 col-md-6">
+                                                                          <div class="form-group text-right">
+                                                                              <button type="button" class="btn btn-default" ng-click="updateResetURL($index)">Reset</button>
+                                                                              
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="col-sm-6 col-md-6">
+                                                                          <div class="form-group text-left">
+                                                                              <button type="button" class="pri-cus-buttons " ng-click="updateShortURL(twContent.longUrl,$index)">Shorten URL</button>
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
+                                                        </div>
+                                                    </div>
+                                       
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                       
+
+                               
+                               <div class="col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <div ng-show="showclientDeclineReason">
+                                            <label for="notes">Decline Reason</label>
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="clientdeclineReason"></textarea>
+                                            <div class="text-center">
+                                                <button type="button" class="btn btn-default" ng-click="ClientDecline();">Client Decline</button>
+                                            </div>
+                                        </div>
+                                        <!--<div class="text-center" ng-show="showclientDeclineReason || showClientapprove">
+                                            <button type="button" class="sec-cus-buttons mar-5" ng-show="showClientapprove" ng-click="SendpackClientApproval();">Approve as client</button>
+                                        </div>-->
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <div ng-show="showDeclineReason">
+                                            <label for="notes">Decline Reason</label>
+                                            <textarea class="form-control" id="notes" rows="3" ng-model="declineReason"></textarea>
+                                            <div class="text-center mar-5">
+                                                <button type="button" class="btn btn-default" ng-click="fnDeclineReason();">Admin Decline</button>
+                                            </div>
+                                        </div>
+                                        <div class="text-center" ng-show="showDeclineReason || showAdminapprove">
+                                            <button type="button" class="sec-cus-buttons mar-5" ng-show="showAdminapprove" ng-click="packSendAdminApproval();">Send to Client for Approval</button>
+                                        </div>
+                                    </div>
+                                </div>
+                               </div>
+
+                                   <div class="row">
+                                    <hr>
+                                    <div class="col-sm-12 col-md-12 clearfix text-center">
+                                      <button type="button" class="btn btn-default mar-5" ng-show="showCancel" ng-click="fnCancel()">Cancel</button>
+                                       <button type="button" class="btn btn-default mar-5" ng-show="!showCancel" ng-click="cancelUser()">Cancel</button>
+                                       <button type="button" ng-show="levelData == '30'" class="sec-cus-buttons mar-5" ng-show="showclientDeclineReason || showClientapprove" ng-click="SendpackClientApproval();">Approve & Schedule Content</button>
+                                        <button type="button" ng-show="levelData == '90'" class="sec-cus-buttons mar-5" ng-show="showclientDeclineReason || showClientapprove" ng-click="SendpackClientApproval();">Approve as Client</button>
+                                       <button type="button" class="sec-cus-buttons mar-5" ng-show="showDeclineReason || showAdminapprove" ng-click="packSendAdminApproval();">Send to Client for Approval</button>
+                                       <button type="button" class="sec-cus-buttons mar-5" ng-click="contentIsReady();" ng-show="showContentSend">
+                                          Content is ready, send to editor
+                                        </button>
+                                       <!-- <button type="button" class="sec-cus-buttons mar-5" ng-show="showClientapprove" ng-click="SendpackClientApproval();">Approve as Client</button>-->
+                                         
+                                    <button type="button" class="pri-cus-buttons mar-5" ng-click="updateContents();">Save</button>
+                                    </div>
+                                </div>
+
+
+                            </form>
+
+                             <form class="styles" ng-show="UpdateshowOnlySevenDayPackage" name="sevenpackForm">
+                                <div class="panel-group" id="accordion" >
+
+                                <div class="panel panel-default" ng-repeat="main in MainDiv1">
+                            <div class="panel-heading">
+                                        <h3 class="panel-title form-inline" ng-show="plaformTyp == 'facebook'"> <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}">Post {{$index + 1}} - {{main.FacebookContent.dataTitle}} </span>
+                                            <!--   <ng-timepicker id="timePicker" class="dropdown"  data-ng-class="{open: open}" data-ng-click="open=!open" ng-model="ctrol.stime" ></ng-timepicker>--> <i class="fa fa-chevron-down pull-right" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}"> </i><!--<ng-timepicker id="timePicker" ng-show="plaformTyp == 'facebook'" class="dropdown"  ng-model="main.FacebookContent.weklyctrl.potime" object-to-inject="main.FacebookContent.weklyctrl.injectedObject"></ng-timepicker>--></h3>
+
+                                           <!--   <h3 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}"
+                                               ng-show="!main.FacebookContent && !main.TwitterContent">Post {{$index + 1}} - {{main.FbImageContent.GroupHeaderText}} <i class="fa fa-chevron-down pull-right"></i></h3>
+ -->
+                                                  <h3 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}"
+                                                   ng-show="plaformTyp == 'twitter'">Post {{$index + 1}}  -{{main.TwitterContent.dataTitle}} 
+                                                      <!--    <ng-timepicker id="timePicker" class="dropdown"  data-ng-class="{open: open}" data-ng-click="open=!open" ng-model="ctrol.stime" ></ng-timepicker> --><i class="fa fa-chevron-down pull-right"></i></h3>
+
+                                                  <h3 class="panel-title form-inline"  ng-show="plaformTyp == 'pack'"> <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}">Day {{$index + 1}}  -{{main.FacebookContent.dataTitle}}</span> <i class="fa fa-chevron-down pull-right"  data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}"></i>
+                                                     <ng-timepicker id="timePicker" ng-show="plaformTyp == 'pack'" class="dropdown"  ng-model="main.FacebookContent.weklyctrl.potime" object-to-inject="main.FacebookContent.weklyctrl.injectedObject"></ng-timepicker>
+                                                   </h3>
+                                                                                              <!--<h3 class="panel-title" 
+                                                   ng-show="main.FacebookContent && main.TwitterContent"> <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}">Day {{$index + 1}}  -{{main.FacebookContent.GroupHeaderText}}</span> <i class="fa fa-chevron-down pull-right"  data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$index + 1}}"></i>
+                                                          <ng-timepicker id="timePicker" class="dropdown"   ng-model="weklyctrl.potime" ></ng-timepicker>  </h3>-->
+
+                                    </div>
+                                    <div id="collapseTwo{{$index + 1}}" class="panel-collapse collapse ">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-4" ng-show="plaformTyp == 'facebook' || plaformTyp == 'pack'">
+                                                    <legend>Facebook Content</legend>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack'">
+                                                              <input type="radio"  ng-init="FacebookContent[$index].Declined=main.FacebookContent.Declined" ng-model="FacebookContent[$index].Declined" ng-value='false'> Approve
+                                                               <input type="radio"  ng-init="FacebookContent[$index].Declined=main.FacebookContent.Declined"  ng-model="FacebookContent[$index].Declined"  ng-value='true'> Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack' && FacebookContent[$index].Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="FacebookContent[$index].DeclineReason=main.FacebookContent.DeclineReason" ng-model="FacebookContent[$index].DeclineReason">
+                                                       </div>
+                                                       </div>
+                                                     <div class="row" ng-show="plaformTyp == 'facebook'">
+                                                        <div class="col-sm-8 col-md-8">
+                                                          <div class="form-group">
+                                                                <label>Post Date</label>  
+                                                        <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                               <input  class="form-control" id="twitsdate" ng-model="main.FacebookContent.scheduleDate">
+                                         </datepicker>
+                                     </div>
+                                           </div>
+                                         <div class="col-sm-4 col-md-4">
+                                            <div class="form-group">
+                                                                <label>Time</label> 
+                                           <ng-timepicker id="timePicker" class="dropdown"  ng-model="main.FacebookContent.weklyctrl.potime" object-to-inject="main.FacebookContent.weklyctrl.injectedObject"></ng-timepicker>
+                                     </div>
+                                       </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbmicro">Microblog</label>
+                                                                <textarea class="form-control" id="fbmicro" rows="3" ng-model="main.FacebookContent.Microblog" maxlength="300" ng-trim="false"> </textarea>
+                                                                        <span>{{300 - main.FacebookContent.Microblog.length}} Characters Left</span>
+                                                              
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitle">Title</label>
+                                                                <input type="text" class="form-control" id="fbtitle" ng-model="main.FacebookContent.Title">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbtitlelink">Title Link</label>
+                                                                <input type="text" class="form-control" id="fbtitlelink" ng-model="main.FacebookContent.Titlelink">
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="fbdes">Description</label>
+                                                                <textarea class="form-control" id="fbdes" rows="3" ng-model="main.FacebookContent.Description" maxlength="300" ng-trim="false"> </textarea>
+                                                                        <span>{{300 - main.FacebookContent.Description.length}} Characters Left</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <div class="row">
+                                                        <div class="col-sm-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="addpic">Add Picture</label>
+                                                                   <input type="file" name="facebImg" maxsize="750px" id="{{$index}}" ng-model="main.FacebookContent.fb_picture" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="Imgpreview(this,'facepackImg')">
+                                                                    <!-- <span class=required ng-show="sevenpackForm.facebImg.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                   <div class="row" ng-show="main.FacebookContent.imgLink.length > 25 || main.FacebookContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img ng-src="{{main.FacebookContent.imgLink}}" id="facepackImg{{$index}}"  ng-model="facepackImg"  width="100%" height="100%"/>
+                                                        </div>
+                                                        <a ng-click="removefacepackImg($index);main.FacebookContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                   </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12 text-center">
+                                                            <p class="">{{main.FacebookContent.fb_action_text}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-6" ng-show="main.FbImageContent!= null">
+                                                                  <legend>Facebook Image</legend>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack'">
+                                                              <input type="radio" ng-init="FbImageContent[$index].Declined=main.FbImageContent.Declined" ng-model="FbImageContent[$index].Declined" ng-value="false" > Approve 
+                                                                <input type="radio" ng-init="FbImageContent[$index].Declined=main.FbImageContent.Declined"  ng-model="FbImageContent[$index].Declined" ng-value="true" >  Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack' && FbImageContent[$index].Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="FbImageContent[$index].DeclineReason=main.FbImageContent.DeclineReason" ng-model="FbImageContent[$index].DeclineReason">
+                                                       </div>
+                                                       </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="desc">Description</label>
+                                                                        <textarea class="form-control" id="desc" rows="3" ng-model="main.FbImageContent.Description" maxlength="300" ng-trim="false"> </textarea>
+                                                                        <span>{{300 - main.FbImageContent.Description.length}} Characters Left</span>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" name="fbImg" maxsize="750px" id="{{$index}}" ng-model="main.FbImageContent.fb_picture" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="Imgpreview(this,'fbipackImg1')">
+                                                                      <!--   <span class=required ng-show="sevenpackForm.fbImg.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                       <div class="row" ng-show="main.FbImageContent.imgLink.length > 25 || main.FbImageContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{main.FbImageContent.imgLink}}" id="fbipackImg1{{$index}}"  ng-model="fbipackImg1"  width="100%" height="100%"/>
+
+                                                        </div>
+                                                        <a ng-click="removefbipackImg($index);main.FbImageContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                </div>
+                                                        </div>
+                                                        <div class="col-sm-6" ng-show="plaformTyp == 'twitter' || plaformTyp == 'pack'">
+                                                             <legend>Twitter Content</legend>
+                                                         <div class="row">
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack'">
+                                                              <input type="radio" ng-init="TwitterContent[$index].Declined=main.TwitterContent.Declined" ng-model="TwitterContent[$index].Declined" ng-value="false"> Approve
+                                                               <input type="radio"  ng-init="TwitterContent[$index].Declined=main.TwitterContent.Declined"  ng-model="TwitterContent[$index].Declined" ng-value="true"> Decline
+                                                         </div>
+                                                         <div class="col-sm-12" ng-show="plaformTyp == 'pack' && TwitterContent[$index].Declined==true">
+                                                         Reason:<input type="text" class="form-control" ng-value="TwitterContent[$index].DeclineReason=main.TwitterContent.DeclineReason" ng-model="TwitterContent[$index].DeclineReason">
+                                                       </div>
+                                                        </div>
+                                                     
+                                           <div class="row"  ng-show="plaformTyp == 'twitter'" >
+                                         <div class="col-sm-8 col-md-8">
+                                                          <div class="form-group">
+                                                                <label>Post Date</label>  
+                                                        <datepicker date-format="MM/dd/yyyy" button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>">
+                                               <input  class="form-control" id="twitsdate" ng-model="main.TwitterContent.twitsdate">
+                                         </datepicker>
+                                     </div>
+                                           </div>
+                                         <div class="col-sm-4 col-md-4">
+                                            <div class="form-group">
+                                                                <label>Time</label> 
+                                           <ng-timepicker id="timePicker" class="dropdown"   ng-model="main.TwitterContent.weklyctrl.schdtime" object-to-inject="main.TwitterContent.weklyctrl.injectedObject"></ng-timepicker>
+                                     </div>
+                                       </div>     </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="twmicro">Microblog</label>
+                                                                        <textarea class="form-control" id="twmicro" rows="3" ng-model="main.TwitterContent.Microblog" maxlength="140" ng-trim="false"> </textarea>
+                                                                        <span>{{140 - main.TwitterContent.Microblog.length}} Characters Left</span>
+                                                                        
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="fbaddpic">Add Picture</label>
+                                                                       <input type="file" name="fbImg" maxsize="750px" id="{{$index}}" ng-model="main.TwitterContent.fb_picture" base-sixty-four-input accept="image/gif, image/jpeg, image/png" onchange="Imgpreview(this,'twitpackImg1')">
+                                                                       <!--  <span class=required ng-show="sevenpackForm.fbImg.$error.maxsize">Files must not exceed 5000 KB</span>-->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    <div class="row" ng-show="main.TwitterContent.imgLink.length > 25 || main.TwitterContent.fb_picture">
+                                                    <div class="col-sm-12">
+                                                        <div class="dz-default">  
+                                                             <img  ng-src="{{main.TwitterContent.imgLink}}" id="twitpackImg1{{$index}}"  ng-model="twitpackImg1"  width="100%" height="100%"/>
+                                                        </div>
+                                                        <a  ng-click="removetwitpackImg($index);main.TwitterContent.fb_picture=''"> <i class="fa fa-times"></i> Remove Picture</a>
+                                                    </div>
+                                                     </div>
+                                                           <legend>URL Shortener</legend>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="lurl">Long Url</label>
+                                            <input type="text" class="form-control" id="lurl" ng-model="main.TwitterContent.longUrl">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label for="surl">Short Url</label>
+                                            <input type="text" class="form-control" id="surl" ng-model="main.TwitterContent.shortedUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" ng-click="updateResetURL($index)">Reset</button>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group text-left">
+                                            <button type="button" class="pri-cus-buttons " ng-click="updateShortURL(main.TwitterContent.longUrl,$index)">Shorten URL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                                        </div>
+                                                    </div>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                         
+                                   
+<div class="col-sm-12 col-md-12">
+    <div class="form-group">
+        <div ng-show="showclientDeclineReason">
+         <label for="notes">Decline Reason</label>
+            <textarea class="form-control" id="notes" rows="3" ng-model="clientdeclineReason"></textarea>
+            <div class="text-center">
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" ng-click="ClientDecline();">Client Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-sm-12 col-md-12">
+    <div class="form-group">
+        <div ng-show="showDeclineReason">
+            <label for="notes">Decline Reason</label>
+            <textarea class="form-control" id="notes" rows="3" ng-model="declineReason"></textarea>
+            <div class="text-center">
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" ng-click="fnDeclineReason();">Admin Decline</button>
+                </div>
+            </div>
+
+              <div class="text-center" ng-show="showDeclineReason || showAdminapprove">
+                                            <button type="button" class="sec-cus-buttons mar-5" ng-show="showAdminapprove" ng-click="packSendAdminApproval();">Send to Client for Approval</button>
+                                        </div>
+        </div>
+        
+    </div>
+
+</div>
+                                 
+                                    
+                                    <div class="row">
+                                    <hr>
+                                    <div class="col-sm-12 col-md-12 clearfix text-center">
+                                      <button type="button" class="btn btn-default mar-5" ng-show="showCancel" ng-click="fnCancel()">Cancel</button>
+                                       <button type="button" class="btn btn-default mar-5" ng-show="!showCancel" ng-click="cancelUser()">Cancel</button>
+                                       <button type="button" ng-show="levelData == '30'" class="sec-cus-buttons mar-5" ng-show="showclientDeclineReason || showClientapprove" ng-click="SendpackClientApproval();">Approve & Schedule Content</button>
+                                        <button type="button" ng-show="levelData == '90'" class="sec-cus-buttons mar-5" ng-show="showclientDeclineReason || showClientapprove" ng-click="SendpackClientApproval();">Approve as Client</button>
+                                       <button type="button" class="sec-cus-buttons mar-5" ng-show="showDeclineReason || showAdminapprove" ng-click="packSendAdminApproval();">Send to Client for Approval</button>
+                                       <button type="button" class="sec-cus-buttons mar-5" ng-click="contentIsReady();" ng-show="showContentSend">
+                                          Content is ready, send to editor
+                                        </button>
+                                       <!-- <button type="button" class="sec-cus-buttons mar-5" ng-show="showClientapprove" ng-click="SendpackClientApproval();">Approve as Client</button>-->
+                                         
+                                    <button type="button" class="pri-cus-buttons mar-5" ng-click="updateContents();">Save</button>
+                                    </div>
+                                </div>
+                               </div>
+                            </form>
+                        </div>
+                    </div>
+                </div><!--end of update form-->
+             
+                
+                
+                
+                
+                
+             
+                
+                
+                
+           <!--End packages-->      
+                
+                
+                
+                
+          
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+function Imgpreview (argument,name) {
+    document.getElementById(name+argument.id).src= window.URL.createObjectURL(argument.files[0]);
+}
+
+</script>

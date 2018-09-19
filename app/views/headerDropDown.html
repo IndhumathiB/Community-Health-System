@@ -1,0 +1,43 @@
+<ul class="nav navbar-right nav-right-options" >
+                                    <li class="dropdown" ng-show="NotificationCount!='0'">
+                                        <a href="#/ContentManagement/FailedContent" data-tooltip="tooltip" data-placement="bottom" class="dropdown-toggle text-right ellipsis" data-toggle="dropdown" title="{{NotificationCount}} Scheduled content failed to posts, click here for the details"> <i class="fa fa-bell-o"></i> <span ng-show="NotificationCount!='0'" class="label radius">{{NotificationCount}}</span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Some other option</a></li>
+                                            <li><a href="#">Some other option</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#">another one more</a></li>
+                                        </ul>
+                                    </li>
+
+                                       <li class="dropdown" ng-show="NotificationCount=='0'">
+                                        <a data-tooltip="" data-placement="bottom" class="dropdown-toggle text-right ellipsis" data-toggle="dropdown" title=""> <i class="fa fa-bell-o"></i> <span  class="label radius"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Some other option</a></li>
+                                            <li><a href="#">Some other option</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#">another one more</a></li>
+                                        </ul>
+                                    </li>
+
+                                   <li class="dropdown" data-ng-class="{open: open}" data-ng-click="open=!open" >
+                                    <!--     <a class="dropdown-toggle text-right ellipsis" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="caret"></span></a> -->
+                                       
+
+                                          <a class="dropdown-toggle text-right ellipsis" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="hidden-sm hidden-xs">{{user_name}}</span> <span class="caret"></span></a>
+
+
+
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#/myacount">My Account</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a ng-click="logout()" ng-controller="logoutController">Logout</a></li>
+                                        </ul>
+                                        
+                                    </li>
+                                </ul>
+<style type="text/css">
+.tooltip-inner{
+               max-width: none;
+               white-space:  nowrap;
+        }
+</style>

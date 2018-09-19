@@ -1,0 +1,141 @@
+
+   
+<div class="main" >
+   
+    <div id="main-content">
+        <div class="header-wrapper">
+            <header class="clearfix">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="col-xs-7 col-sm-8 col-md-7 col-lg-8" id="">
+                                <ul class="cus-breadcrumb visible-md-block visible-lg-block reset pull-left">
+                                    <li class=""><a>Support Forum</a></li>
+                                    
+                                    
+                                </ul>
+                                <ul class="hidden-md hidden-lg pull-left reset">
+                                    <li><a ng-click="fnClickBar();"><i class="fa fa-bars"></i></a></li>
+                                    <li>BeSociably</li>
+                                </ul>
+                                
+                            </div>
+                            <!-- /.navbar-collapse -->
+                          <div class="col-xs-5 col-sm-4 col-md-5 col-lg-4 text-right" id="test" ng-include="'views/headerDropDown.html'">
+
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+        </div><!-- .header-wrapper End -->
+        
+        <div class="page-contents">
+            <div class="container-fluid">
+               <div class="list-view">
+                <div class="row hidden-md hidden-lg mob-heads">
+                   <div class="col-xs-9 col-sm-8">
+                      <h3>Support Forum</h3>
+                   </div>
+                   <div class="col-xs-3 col-sm-4 text-right">
+                       <!--<button class="pri-cus-buttons"><i class="fa fa-plus"></i> Create New Task</button>-->
+                   </div>
+               </div>
+                
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                       <strong class="mar-10">Content Will be Comming Soon in Support Forum !</strong>
+                        
+                    </div>
+                </div> <!-- end of content -->
+                
+               </div>
+               
+               
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".filter-fields").hide();
+    
+    $('.dropdown-toggle').dropdown();
+    
+    $(window).trigger('resize');
+    
+    $(".filter-container label").click(function(){
+        $(this).toggleClass("open");
+        $(".filter-fields").toggle()
+    });
+    
+    $(".navbar-fixed-top .pri-cus-buttons").click(function(){
+        //$(this).addClass("hide");
+        $("div.list-view").addClass("animated fadeOutUp").addClass("hide");
+        $("div.form-view").removeClass("hide").addClass("animated fadeInUp");
+    });
+    
+    $("form.styles .btn.btn-default").click(function(){
+        //$(this).addClass("hide");
+        $("div.form-view").addClass("hide").addClass("fadeOutDown");
+        $("div.list-view").removeClass("hide fadeOutUp").addClass("fadeInDown");
+    });
+    
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
+    
+    $(".cus-breadcrumb + .hidden-md.hidden-lg a").click(function(){
+        $("#side-nav").toggleClass("collapsed");
+    });
+    
+    $(".brand-logo a").click(function(){
+        $("#side-nav").toggleClass("collapsed");
+    });
+    
+    $(window).resize(function(){
+        var value = $(window).width();
+      if(value<=992) {
+            $("#side-nav").addClass("collapsed");
+        } else {
+            $("#side-nav").removeClass("collapsed");
+        }
+    });
+    
+    //When page is ready hide the Sub Navs
+	$(".sub-navs").hide();
+    
+    // Accordion Toggle for Main Nav in Side bar
+	$(".nav[data-accordion]").on( "click", "li", function( event ) {
+		if($(this).hasClass("current")) {
+			//$(this).removeClass("active")
+		} else {
+			$(".nav[data-accordion] li").removeClass("current");
+			$(this).addClass("current");
+		}
+		
+		/*if($(this).hasClass("parent")) {
+			$("li.parent").find(".fa-plus").removeClass("fa-minus");
+			$(this).find(".fa-plus").addClass("fa-minus");
+		} else {
+			$("li.parent").find(".fa-plus").removeClass("fa-minus");
+		}*/
+		
+    });
+	
+	$(".nav[data-accordion] .sub-navs").on( "click", "li", function( event ) {
+		if($(this).hasClass("active")) {
+			//$(this).removeClass("active")
+		} else {
+			$(".nav[data-accordion] li").removeClass("active");
+			$(this).addClass("active");
+		}
+    });
+});
+</script>
+-->
